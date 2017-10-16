@@ -1,0 +1,8 @@
+C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Web\bin\Debug\Obligatorio_Web.exe.config
+C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Web\bin\Debug\Obligatorio_Web.exe
+C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Web\bin\Debug\Obligatorio_Web.pdb
+C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Web\bin\Debug\Obligatorio_Dominio.dll
+C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Web\bin\Debug\Obligatorio_Dominio.pdb
+C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Web\obj\Debug\Obligatorio_Web.csprojResolveAssemblyReference.cache
+C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Web\obj\Debug\Obligatorio_Web.exe
+C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Web\obj\Debug\Obligatorio_Web.pdb
