@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-    class Servicio
+    public class Servicio
     {
         private string nombre;
         private string descripcion;

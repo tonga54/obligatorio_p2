@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-    class EventoServicio
+    public class EventoServicio
     {
         private Servicio servicio;
         private int cantAsistentes; // del servicio no del evento

@@ -45,14 +45,13 @@ namespace Obligatorio_Dominio
             return ev;
         }
 
-        //public Evento buscarEvento ()
+        //public Evento buscarEvento () PARA AGREGARLE SERVICIOS EN EL FUTURO
 
 
         public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes,int duracion, Servicio serv, int cantPersonasServicio)
         {
             Estandar ev = new Estandar(fecha, turno, descripcion, cliente, cantAsistentes, duracion, serv, cantPersonasServicio);
-            
-            //eventos.Add(new EventoServicio());
+            eventos.Add(ev);
         }
 
         public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, Servicio serv, int cantPersonasServicio)

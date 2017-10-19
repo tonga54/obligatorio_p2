@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-   abstract class Evento
+   public abstract class Evento
     {
         protected DateTime fecha;
         protected string turno;

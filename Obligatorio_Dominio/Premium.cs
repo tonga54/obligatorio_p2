@@ -15,9 +15,5 @@ namespace Obligatorio_Dominio
             this.fecha = fecha;
         }
 
-        private double calcularCostoAsistente()
-        {
-            return cantAsistentes * 1.505;
-        }
     }
 }
