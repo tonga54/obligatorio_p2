@@ -74,6 +74,7 @@ namespace Obligatorio_Dominio
                 devolucion = "\nYa hay un evento registrado para esa fecha\n";
             }
 
+
             return devolucion;
             
         }
