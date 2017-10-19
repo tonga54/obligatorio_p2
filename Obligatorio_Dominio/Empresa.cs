@@ -47,33 +47,75 @@ namespace Obligatorio_Dominio
         }
 
         //EVENTO ESTANDAR
-        public string altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, int duracion, string nombreServicio, int cantPersonasServicio) { 
+        public string altaEvento(string email,string password, DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, int duracion, string nombreServicio, int cantPersonasServicio) {
             string devolucion = "";
-            
+            //busco al usuario solicitado
+            Administrador adm = verificarUsuario(email, password);
+            if (adm is Organizador && adm != null)
+            {
+                //si el usuario encontrado es diferente de nulo y es Organizador entonces lo casteo
+                //una vez casteado verifico la fecha del evento, si esta disponible entonces
+                //voy a buscar el servicio que el usuario introdujo (el nombre), si existe
+                //procedo con crear el evento y guardarlo en la lista que posee el Organizador
+                Organizador org = (Organizador)adm;
+                if (verificarFechaEvento(fecha) == null)
+                {
+                    Servicio serv = buscarServicio(nombreServicio);
+                    if (serv != null)
+                    {
+                        org.altaEvento(fecha, turno, descripcion, cliente, cantAsistentes, duracion, serv, cantPersonasServicio);
+                    }
+                    else
+                    {
+                        devolucion = "\nNo existe el servicio\n";
+                    }
+                }
+                else
+                {
+                    devolucion = "\nYa hay un evento registrado para esa fecha\n";
+                }
+            }
+            else
+            {
+                devolucion = "\nNo existe un usuario con ese mail y/o contraseña\n";
+            }
 
             return devolucion;
         }
 
         //EVENTO PREMIUM
-        public string altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantidadAsistentes, string nombreServicio,int cantPersonasServicio)
+        public string altaEvento(string email, string password, DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, string nombreServicio,int cantPersonasServicio)
         {
-            string devolucion;
-
-            if (verificarFechaEvento(fecha) == null)
+            string devolucion = "";
+            //busco al usuario solicitado
+            Administrador adm = verificarUsuario(email, password);
+            if (adm is Organizador && adm != null)
             {
-                Servicio serv = buscarServicio(nombreServicio);
-                if(serv != null)
+                //si el usuario encontrado es diferente de nulo y es Organizador entonces lo casteo
+                //una vez casteado verifico la fecha del evento, si esta disponible entonces
+                //voy a buscar el servicio que el usuario introdujo (el nombre), si existe
+                //procedo con crear el evento y guardarlo en la lista que posee el Organizador
+                Organizador org = (Organizador)adm;
+                if (verificarFechaEvento(fecha) == null)
                 {
-                    // existe segui EN ESTE PUNTO YA TENES TODO, SOLO TE FALTA EL ORGANIZADOR
-                }
+                    Servicio serv = buscarServicio(nombreServicio);
+                    if(serv != null)
+                    {
+                        org.altaEvento(fecha, turno, descripcion, cliente, cantAsistentes, serv, cantPersonasServicio);
+                    }
+                    else
+                    {
+                        devolucion = "\nNo existe el servicio\n";
+                    }
+                }else
                 {
-                    devolucion = "\nNo existe el servicio\n";
+                    devolucion = "\nYa hay un evento registrado para esa fecha\n";
                 }
-            }else
-            {
-                devolucion = "\nYa hay un evento registrado para esa fecha\n";
             }
-
+            else
+            {
+                devolucion = "\nNo existe un usuario con ese mail y/o contraseña\n";
+            }
 
             return devolucion;
             
@@ -114,7 +156,7 @@ namespace Obligatorio_Dominio
             return serv;
         }
 
-        public static Administrador verificarUsuario(string email, string password)
+        public Administrador verificarUsuario(string email, string password)
         {
             int i = 0;
             Administrador usuario = null;
@@ -216,6 +258,10 @@ namespace Obligatorio_Dominio
             servicios.Add(new Servicio("Cabalgata", "Cabalgata al atardecer", 50));
             servicios.Add(new Servicio("Paseo en barco", "Paseo por la costa", 250));
             servicios.Add(new Servicio("Fiesta en la playa", "Fiesta en la playa", 80));
+            
+            altaEvento("gaston@eventos2017.com", "password2", DateTime.Now, "Noche", "dasdsajhd", "Pedro", 20, "Cabalgata", 10);
+            altaEvento("gaston@eventos2017.com", "password2", new DateTime(2017, 12, 24), "Tarde", "dasdsajhd", "Pedro", 10, 2, "Cabalgata", 5);
+            altaEvento("gaston@eventos2017.com", "password2", new DateTime(2018, 01, 27), "Mañana", "dasdsajhd", "Pedro", 20, "Cabalgata", 10);
         }
 
         

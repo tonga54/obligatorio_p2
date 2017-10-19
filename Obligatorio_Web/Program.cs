@@ -177,7 +177,8 @@ namespace Obligatorio_Web
 
                             if (duracion > 0 && duracion <= 4 && cantidadAsistentes > 0 && cantidadAsistentes <= 10)
                             {
-                                emp.altaEvento(fecha, turno, descripcion, cliente, cantidadAsistentes, duracion, nombreServicio, cantPersonasServicio);
+                                string resultado = emp.altaEvento(email,password,fecha, turno, descripcion, cliente, cantidadAsistentes, duracion, nombreServicio, cantPersonasServicio);
+                                Console.WriteLine(resultado);
                                 //Empresa.success("Evento estandar agregado con exito");
                                 //string resultado = "x";// aqui retorno el detalle del evento;
                             }
@@ -193,8 +194,8 @@ namespace Obligatorio_Web
                             //filtros para eventos premium
                             if (cantidadAsistentes >= 0 && cantidadAsistentes <= 100)
                             {
-                                emp.altaEvento(fecha, turno, descripcion, cliente, cantidadAsistentes, nombreServicio, cantPersonasServicio);
-                                //success("Evento premium agregado con exito");
+                                string resultado = emp.altaEvento(email,password,fecha, turno, descripcion, cliente, cantidadAsistentes, nombreServicio, cantPersonasServicio);
+                                Console.WriteLine(resultado);
                             }
                             else
                             {
@@ -283,8 +284,5 @@ namespace Obligatorio_Web
             Console.WriteLine(result);
             Console.ResetColor();
         }
-
     }
 }
-
-

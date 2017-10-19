@@ -19,7 +19,7 @@ namespace Obligatorio_Dominio
             this.nombre = nombre;
             this.direccion = direccion;
             this.telefono = telefono;
-            this.fechaRegistro = DateTime.Now;
+            this.fechaRegistro = DateTime.Now.Date;
             this.rol = "Organizador";
         }
 
@@ -35,7 +35,7 @@ namespace Obligatorio_Dominio
             Evento ev = null;
             while(i < eventos.Count && ev == null)
             {
-                if (fecha == eventos[i].Fecha)
+                if (fecha.Date == eventos[i].Fecha)
                 {
                     ev = eventos[i];
                 }
@@ -48,27 +48,35 @@ namespace Obligatorio_Dominio
         //public Evento buscarEvento () PARA AGREGARLE SERVICIOS EN EL FUTURO
 
 
+        //EVENTO ESTANDAR
         public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes,int duracion, Servicio serv, int cantPersonasServicio)
         {
             Estandar ev = new Estandar(fecha, turno, descripcion, cliente, cantAsistentes, duracion, serv, cantPersonasServicio);
             eventos.Add(ev);
         }
 
+        //EVENTO PREMIUM
         public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, Servicio serv, int cantPersonasServicio)
         {
             Premium ev = new Premium(fecha, turno, descripcion, cliente, cantAsistentes, serv, cantPersonasServicio);
             eventos.Add(ev);
         }
-        
+
         public string listarEventos()
         {
             string devolucion = "";
+            decimal costoTotal = 0;
             for(int i = 0; i < eventos.Count; i++)
             {
-                devolucion += "\n:::::::::::::::::::::::::::\n" + "\n Nombre: " + this.nombre + "\n:::::::::::::::::::::::::::\n";
-                devolucion += eventos[i].ToString();
+                devolucion += "\n:::::::::::::::::::::::::::\n";
+                devolucion += "\n Nombre: " + this.nombre;
+                devolucion += "\n Codigo: " + eventos[i].Codigo + "\n";
+                devolucion += " Cliente: " + eventos[i].Cliente + "\n";
+                devolucion += " Costo: $" + eventos[i].costoTotal() + "\n";
+                costoTotal += eventos[i].costoTotal();
                 devolucion += "\n:::::::::::::::::::::::::::\n";
             }
+            devolucion += "\n\n:::::::::::::::::::::::::::::::::::::::::::::  COSTO TOTAL: $" + costoTotal;
             return devolucion;
         }
 

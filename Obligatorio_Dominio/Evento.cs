@@ -37,16 +37,34 @@ namespace Obligatorio_Dominio
             agregarServicio(servicio, cantAsistentes);
         }
 
-        public override string ToString()
+        public int Codigo
         {
-            string devolucion = " Codigo " + this.codigo + "\n Cliente: " + this.cliente;
-            return devolucion;
+            get
+            {
+                return this.codigo;
+            }
         }
+
+        public string Cliente
+        {
+            get
+            {
+                return this.cliente;
+            }
+        }
+
+        /*public override string ToString()
+        {
+            string devolucion = "\n Codigo " + this.codigo + "\n Cliente: " + this.cliente + "\n Costo total: $" + costoTotal() + "\n";
+            return devolucion;
+        }*/
 
         private void agregarServicio(Servicio servicio,int cantAsistentes)
         {
             servicios.Add(new EventoServicio(servicio, cantAsistentes));
         }
+
+        public abstract decimal costoTotal();
 
     }
 

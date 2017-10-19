@@ -16,6 +16,16 @@ namespace Obligatorio_Dominio
             this.duracion = duracion;
         }
 
+        public override decimal costoTotal()
+        {
+            decimal total = 0;
+            for (int i = 0; i < servicios.Count; i++)
+            {
+                total += servicios[i].calcularTotal();
+            }
+            total += limpieza;
+            return total;
+        }
 
 
     }
