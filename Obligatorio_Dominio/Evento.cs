@@ -15,6 +15,7 @@ namespace Obligatorio_Dominio
         protected int cantAsistentes;
         protected int codigo;
         protected static int ultCodigo;
+        protected List<EventoServicio> servicios = new List<EventoServicio>();
 
         public DateTime Fecha
         {
@@ -24,7 +25,7 @@ namespace Obligatorio_Dominio
             }
         }
 
-        public Evento(DateTime fecha, string turno, string descripcion, string cliente,int cantAsistentes)
+        public Evento(DateTime fecha, string turno, string descripcion, string cliente,int cantAsistentes, Servicio servicio, int cantPersonasServicio)
         {
             this.fecha = fecha;
             this.turno = turno;
@@ -33,6 +34,18 @@ namespace Obligatorio_Dominio
             this.cantAsistentes = cantAsistentes;
             this.codigo = Evento.ultCodigo;
             Evento.ultCodigo++;
+            agregarServicio(servicio, cantAsistentes);
+        }
+
+        public override string ToString()
+        {
+            string devolucion = " Codigo " + this.codigo + "\n Cliente: " + this.cliente;
+            return devolucion;
+        }
+
+        private void agregarServicio(Servicio servicio,int cantAsistentes)
+        {
+            servicios.Add(new EventoServicio(servicio, cantAsistentes));
         }
 
     }

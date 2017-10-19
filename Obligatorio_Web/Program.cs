@@ -29,6 +29,8 @@ namespace Obligatorio_Web
             Console.WriteLine("2 - Registrar organizador");
             Console.WriteLine("3 - Listar usuarios");
             Console.WriteLine("4 - Registrar evento");
+            Console.WriteLine("5 - Listar eventos");
+            Console.WriteLine("6 - Listar servicios");
         }
 
         static void accionesMenu(int opcion)
@@ -47,6 +49,12 @@ namespace Obligatorio_Web
                 case 4:
                     registrarEvento();
                     break;
+                case 5:
+                    listarEventos();
+                    break;
+                case 6:
+                    listarServicios();
+                    break;
                 default:
                     break;
             }
@@ -61,10 +69,18 @@ namespace Obligatorio_Web
 
             if (password.Length >= 8 && email.IndexOf("@eventos2017.com") > -1)
             {
-                emp.altaAdministrador(email, password);
-            }else
+                if (emp.altaAdministrador(email, password))
+                {
+                    success("Administrador agregado con exito");
+                }
+                else
+                {
+                    error("Ya existe un usuario con ese email");
+                }
+            }
+            else
             {
-                emp.error("Ingrese los datos nuevamente");
+                error("Ingrese los datos nuevamente");
             }
         }
 
@@ -84,16 +100,22 @@ namespace Obligatorio_Web
 
             if (password.Length >= 8 && email.IndexOf("@eventos2017.com") > -1 && nombre != "" && telefono != "" && direccion != "")
             {
-                emp.altaOrganizador(email, password,nombre,telefono,direccion);
-            }else
+                if(emp.altaOrganizador(email, password, nombre, telefono, direccion))
+                {
+                    success("Organizador agregado con exito");
+                }else
+                {
+                    error("Ya existe un usuario con ese email");
+                }
+            } else
             {
-                emp.error("Ingrese los datos nuevamente");
+                error("Ingrese los datos nuevamente");
             }
         }
 
         static void listarUsuarios()
         {
-            emp.listarUsuarios();
+            Console.WriteLine(emp.listarUsuarios());
         }
 
         static void registrarEvento()
@@ -103,16 +125,56 @@ namespace Obligatorio_Web
             Console.WriteLine("Ingrese el password");
             string password = Console.ReadLine();
 
+
             if (password.Length >= 8 && email.IndexOf("@eventos2017.com") > -1)
             {
-                emp.altaEvento(email, password);
+               // emp.altaEvento(email, password);
             }
             else
             {
-                emp.error("Ingrese los datos nuevamente");
+                //Empresa.error("Ingrese los datos nuevamente");
             }
 
         }
 
+        static void listarServicios()
+        {
+            emp.listarServicios();
+        }
+
+        static void listarEventos()
+        {
+            Console.WriteLine("Ingrese el mail");
+            string email = Console.ReadLine();
+            Console.WriteLine("Ingrese el password");
+            string password = Console.ReadLine();
+            if(email != "" && password != "")
+            {
+                //emp.listarEventos(email, password);
+            }else
+            {
+                error("Datos ingresados incorrectamente");
+            }
+            
+        }
+
+
+        static void error(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            string result = "\n***** Error: " + message + " *****\n";
+            Console.WriteLine(result);
+            Console.ResetColor();
+        }
+
+        public static void success(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            string result = "\n***** Resultado: " + message + " *****\n";
+            Console.WriteLine(result);
+            Console.ResetColor();
+        }
+
     }
+
 }

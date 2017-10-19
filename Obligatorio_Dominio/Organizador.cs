@@ -29,31 +29,49 @@ namespace Obligatorio_Dominio
             return resultado;
         }
 
-        public bool verificarFecha(DateTime fecha)
+        public Evento verificarFecha(DateTime fecha)
         {
-            for (int i = 0; i < this.eventos.Count; i++)
+            int i = 0;
+            Evento ev = null;
+            while(i < eventos.Count && ev == null)
             {
                 if (fecha == eventos[i].Fecha)
                 {
-                    return true;
+                    ev = eventos[i];
                 }
+                i++;
             }
 
-            return false;
+            return ev;
         }
 
-        public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes,int duracion)
+        //public Evento buscarEvento ()
+
+
+        public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes,int duracion, Servicio serv, int cantPersonasServicio)
         {
-            Estandar ev = new Estandar(fecha, turno, descripcion, cliente, cantAsistentes, duracion);
-            eventos.Add(ev);
+            Estandar ev = new Estandar(fecha, turno, descripcion, cliente, cantAsistentes, duracion, serv, cantPersonasServicio);
+            
+            //eventos.Add(new EventoServicio());
         }
 
-        public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes)
+        public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, Servicio serv, int cantPersonasServicio)
         {
-            Premium ev = new Premium(fecha, turno, descripcion, cliente, cantAsistentes);
+            Premium ev = new Premium(fecha, turno, descripcion, cliente, cantAsistentes, serv, cantPersonasServicio);
             eventos.Add(ev);
         }
         
+        public string listarEventos()
+        {
+            string devolucion = "";
+            for(int i = 0; i < eventos.Count; i++)
+            {
+                devolucion += "\n:::::::::::::::::::::::::::\n" + "\n Nombre: " + this.nombre + "\n:::::::::::::::::::::::::::\n";
+                devolucion += eventos[i].ToString();
+                devolucion += "\n:::::::::::::::::::::::::::\n";
+            }
+            return devolucion;
+        }
 
     }
 }

@@ -6,77 +6,99 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-   public class Empresa
+    public class Empresa
     {
-        private List<Administrador> usuarios = new List<Administrador>();
+        private static List<Administrador> usuarios = new List<Administrador>();
         private List<Servicio> servicios = new List<Servicio>();
-        
+
         public Empresa()
         {
             cargarDatosPrueba();
         }
 
-        public void altaAdministrador(string email,string password)
+
+        public static Administrador verificarUsuario(string email, string password)
+        {
+            int i = 0;
+            Administrador usuario = null;
+            while (i < Empresa.usuarios.Count && usuario == null)
+            {
+                if (Empresa.usuarios[i].Email == email && Empresa.usuarios[i].Password == password)
+                {
+                    usuario = Empresa.usuarios[i];
+                }
+                i++;
+            }
+            return usuario;
+        }
+
+
+
+       /* public bool altaAdministrador(string email, string password)
         {
             if (verificarUsuario(email, password) != null)
             {
-                error("El usuario ya existe");
-            }else
+                return false;
+            } else
             {
                 usuarios.Add(new Administrador(email, password));
-                success("Administrador agregado con exito");
+                return true;
             }
-            
-        }
-        
-        public void altaOrganizador(string email, string password, string nombre, string telefono, string direccion)
+        }*/
+
+
+        public bool altaAdministrador(string email, string password)
         {
             if (verificarUsuario(email, password) != null)
             {
-                error("El usuario ya existe");
+                // existe
+                return false;
+            }
+            else
+            {
+                usuarios.Add(new Administrador(email, password));
+                return true;
+            }
+        }
+
+
+        public bool altaOrganizador(string email, string password, string nombre, string telefono, string direccion)
+        {
+            if (verificarUsuario(email, password) != null)
+            {
+                return false;
             }
             else
             {
                 usuarios.Add(new Organizador(email, password, nombre, telefono, direccion));
-                success("Organizador agregado con exito");
+                return true;
             }
-            
+
         }
 
-        public Administrador verificarUsuario(string email, string password) {
+        
+
+        public string listarUsuarios()
+        {
+            string devolucion = "";
             for (int i = 0; i < usuarios.Count; i++)
             {
-                if (usuarios[i].Email == email && usuarios[i].Password == password)
+                if (usuarios[i] is Administrador)
                 {
-                    if (usuarios[i] is Organizador) { 
-                        Organizador org = (Organizador)usuarios[i];
-                        return org;
-                    }
+                    devolucion += usuarios[i];
+                } else
+                {
+                    devolucion += usuarios[i];
                 }
             }
-
-            return null;
+            return devolucion;
         }
-
-        public void listarUsuarios()
-        {
-            for(int i = 0; i < usuarios.Count; i++)
-            {
-                if(usuarios[i] is Administrador)
-                {
-                    Console.WriteLine(usuarios[i]);
-                }else
-                {
-                    Console.WriteLine(usuarios[i]);
-                }
-            }
-        }
-
-        public void altaEvento(string email,string password)
+        
+        public void altaEvento(string email, string password)
         {
             Administrador adm = verificarUsuario(email, password);
             if (adm != null && adm is Organizador)
-            {       
+            {
                 //casteo
                 Organizador org = (Organizador)adm;
                 //imprimir datos del organizador
@@ -84,9 +106,10 @@ namespace Obligatorio_Dominio
                 Console.WriteLine("Introduce la fecha del evento");
                 DateTime fecha;
                 DateTime.TryParse(Console.ReadLine(), out fecha);
-                if (!verificarFechaEvento(fecha))
+
+                if (verificarFechaEvento(fecha) == null)
                 {
-                    success("La fecha se encuentra disponible");
+                    Empresa.success("La fecha se encuentra disponible");
 
                     Console.WriteLine("Seleccione el tipo de evento");
                     Console.WriteLine("1 - Evento estandar");
@@ -94,7 +117,7 @@ namespace Obligatorio_Dominio
                     int tipo = 0;
                     int.TryParse(Console.ReadLine(), out tipo);
 
-                    if(tipo == 1 || tipo == 2)
+                    if (tipo == 1 || tipo == 2)
                     {
 
                         Console.WriteLine("Seleccione el turno");
@@ -112,7 +135,7 @@ namespace Obligatorio_Dominio
                         int cantidadAsistentes = 0;
                         int.TryParse(Console.ReadLine(), out cantidadAsistentes);
 
-                        if (turnoNumerico >= 1 && turnoNumerico <= 3 && descripcion != "" && cliente != "" && cantidadAsistentes > 0 )
+                        if (turnoNumerico >= 1 && turnoNumerico <= 3 && descripcion != "" && cliente != "" && cantidadAsistentes > 0)
                         {
                             string turno = "";
                             switch (turnoNumerico)
@@ -128,83 +151,112 @@ namespace Obligatorio_Dominio
                                     break;
                             }
 
-                            if (tipo == 1)
+                            //listar servicios, se ingresa el nombre del servicio, se busca el mismo en la lista de servicios y se retorna
+                            listarServicios();
+                            Console.WriteLine("Ingrese el nombre de un servicio");
+                            string nombreServicio = Console.ReadLine();
+                            Servicio serv = buscarServicio(nombreServicio);
+                            Console.WriteLine("Ingrese la cantidad de personas para el servicio");
+                            int cantPersonasServicio = 0;
+                            int.TryParse(Console.ReadLine(), out cantPersonasServicio);
+
+                            if (serv != null && cantPersonasServicio <= cantidadAsistentes)
                             {
+                                //Validacion sobre la cantidad de asistentes y la cantida de personas para el servicio
 
-                                //filtros especificos para eventos estandar
-                                Console.WriteLine("Ingrese la duracion (horas)");
-                                int duracion = 0;
-                                int.TryParse(Console.ReadLine(), out duracion);
-
-                                if (duracion > 0 && duracion <= 4 && cantidadAsistentes <= 10)
+                                if (tipo == 1)
                                 {
-                                    org.altaEvento(fecha, turno, descripcion, cliente, cantidadAsistentes,duracion);
-                                    success("Evento estandar agregado con exito");
+
+                                    //filtros especificos para eventos estandar
+                                    Console.WriteLine("Ingrese la duracion (horas)");
+                                    int duracion = 0;
+                                    int.TryParse(Console.ReadLine(), out duracion);
+
+                                    if (duracion > 0 && duracion <= 4 && cantidadAsistentes > 0 && cantidadAsistentes <= 10)
+                                    {
+
+                                        org.altaEvento(fecha, turno, descripcion, cliente, cantidadAsistentes, duracion, serv, cantPersonasServicio);
+                                        Empresa.success("Evento estandar agregado con exito");
+                                        string resultado = "x";// aqui retorno el detalle del evento;
+
+                                    }
+
+                                    else
+                                    {
+
+                                        Empresa.error("La duracion del evento o la cantidad de asistentes no corresponde");
+
+                                    }
+
                                 }
+
                                 else
                                 {
-                                    error("La duracion del evento o la cantidad de asistentes no corresponde");
-                                }
+                                    //filtros para eventos premium
+                                    if (cantidadAsistentes >= 0 && cantidadAsistentes <= 100)
+                                    {
+                                        org.altaEvento(fecha, turno, descripcion, cliente, cantidadAsistentes, serv, cantPersonasServicio);
+                                        Empresa.success("Evento premium agregado con exito");
 
+                                    }
+                                    else
+                                    {
+                                        Empresa.error("Los eventos premium no pueden tener una cantidad de asistentes mayor a 100");
+                                    }
+                                }
                             }
                             else
                             {
-                                //filtros para eventos premium
-                                if(cantidadAsistentes <= 100)
-                                {
-                                    org.altaEvento(fecha, turno, descripcion, cliente, cantidadAsistentes);
-                                    success("Evento premium agregado con exito");
-                                }else
-                                {
-                                    error("Los eventos premium no pueden tener una cantidad de asistentes mayor a 100");
-                                }
+                                Empresa.error("La cantidad de personas que asisten al evento no puede ser mayor a las personas del servicio, o el servicio ingresado no existe");
                             }
-
                         }
                         else
                         {
-                            error("Algun campo es esta vacio o no corresponde con lo solicitado");
+                            Empresa.error("Algun campo es esta vacio o no corresponde con lo solicitado");
                         }
 
                     }
                     else
                     {
-                        error("Opcion invalida");
+                        Empresa.error("Opcion invalida");
 
                     }
                 }
                 else
                 {
-                    error("Ya existe un evento para esa fecha");
+                    Empresa.error("Ya existe un evento para esa fecha");
                 }
-
+                
             }
             else
             {
-                error("No existe el organizador");
+                Empresa.error("No existe el organizador");
             }
+
         }
 
+   
 
-        public bool verificarFechaEvento(DateTime fecha)
+        private Evento verificarFechaEvento(DateTime fecha)
         {
-            for(int i = 0; i < usuarios.Count; i++)
+            Evento ev = null;
+            for (int i = 0; i < usuarios.Count; i++)
             {
                 Administrador adm = usuarios[i];
-                if(adm is Organizador)
+                if (adm is Organizador)
                 {
                     Organizador org = (Organizador)adm;
-                    return org.verificarFecha(fecha);
+                    ev = org.verificarFecha(fecha);
                 }
             }
-            return false;
+            return ev;
         }
 
 
         // Metodos generales
 
 
-        
+
         public void cargarDatosPrueba()
         {
             usuarios.Add(new Organizador("gaston@eventos2017.com", "password2", "Gaston2", "08321233", "dir2"));
@@ -215,27 +267,56 @@ namespace Obligatorio_Dominio
             usuarios.Add(new Administrador("gaston@eventos2017.com", "password3"));
             usuarios.Add(new Organizador("gaston@eventos2017.com", "password3", "Gaston3", "08321233", "dir3"));
 
+            servicios.Add(new Servicio("Cabalgata", "Cabalgata al atardecer", 50));
+            servicios.Add(new Servicio("Paseo en barco", "Paseo por la costa", 250));
+            servicios.Add(new Servicio("Fiesta en la playa", "Fiesta en la playa", 80));
         }
 
-
-
-
-        public void error(string message)
+       /* public void listarEventos(string email, string password)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            string result = "\n***** Error: " + message + " *****\n";
-            Console.WriteLine(result);
-            Console.ResetColor();
-        }
+            Administrador user = verificarUsuario(email, password);
+            if (user != null) {
+                if (user is Organizador)
+                {
+                    Organizador org = (Organizador)user;
+                    Console.WriteLine(org.listarEventos());
+                }
+                else
+                {
+                    Empresa.error("El usuario ingresado no es un organizador");
+                }
+            } else
+            {
+                Empresa.error("No existe el usuario");
+            }
 
-        public void success(string message)
+        }*/
+
+        
+        private Servicio buscarServicio(string nombreServicio)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            string result = "\n***** Resultado: " + message + " *****\n";
-            Console.WriteLine(result);
-            Console.ResetColor();
+            int i = 0;
+            Servicio serv = null;
+            while (i < servicios.Count && serv == null)
+            {
+                if (servicios[i].Nombre == nombreServicio)
+                {
+                    serv = servicios[i];
+                }
+                i++;
+            }
+            return serv;
         }
 
 
+        public void listarServicios()
+        {
+            for(int i = 0; i < servicios.Count; i++)
+            {
+                Console.WriteLine(servicios[i]);
+            }
+        }
+        
     }
+
 }

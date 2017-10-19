@@ -10,9 +10,14 @@ namespace Obligatorio_Dominio
     {
         private static double porcentajeAumento = 5.5;
 
-        public Premium(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes) : base(fecha, turno, descripcion, cliente, cantAsistentes)
+        public Premium(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, Servicio serv, int cantPersonasServicio) : base(fecha, turno, descripcion, cliente, cantAsistentes,serv, cantPersonasServicio)
         {
             this.fecha = fecha;
+        }
+
+        private double calcularCostoAsistente()
+        {
+            return cantAsistentes * 1.505;
         }
     }
 }

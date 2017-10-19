@@ -3,3 +3,13 @@ C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Dominio\bin\Debug\Obligatorio
 C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.csprojResolveAssemblyReference.cache
 C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.dll
 C:\Users\Tonga\Desktop\Obligatorio_Web\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.pdb
+C:\Users\alumnoFI\Downloads\Obligatorio_Web\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.csprojResolveAssemblyReference.cache
+C:\Users\alumnoFI\Downloads\Obligatorio_Web\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.dll
+C:\Users\alumnoFI\Downloads\Obligatorio_Web\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.pdb
+C:\Users\alumnoFI\Downloads\Obligatorio_Web\Obligatorio_Dominio\bin\Debug\Obligatorio_Dominio.dll
+C:\Users\alumnoFI\Downloads\Obligatorio_Web\Obligatorio_Dominio\bin\Debug\Obligatorio_Dominio.pdb
+C:\Users\Tonga\Desktop\obligatorio_p2\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.csprojResolveAssemblyReference.cache
+C:\Users\Tonga\Desktop\obligatorio_p2\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.dll
+C:\Users\Tonga\Desktop\obligatorio_p2\Obligatorio_Dominio\obj\Debug\Obligatorio_Dominio.pdb
+C:\Users\Tonga\Desktop\obligatorio_p2\Obligatorio_Dominio\bin\Debug\Obligatorio_Dominio.dll
+C:\Users\Tonga\Desktop\obligatorio_p2\Obligatorio_Dominio\bin\Debug\Obligatorio_Dominio.pdb
