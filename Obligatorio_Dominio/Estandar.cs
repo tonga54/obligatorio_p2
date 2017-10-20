@@ -11,7 +11,7 @@ namespace Obligatorio_Dominio
         private static decimal limpieza = 500;
         private int duracion;
 
-        public Estandar(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, int duracion, Servicio serv, int cantPersonasServicio) : base(fecha, turno, descripcion, cliente, cantAsistentes, serv, cantPersonasServicio)
+        public Estandar(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, int duracion, List<Servicio> serv, List<int> cantPersonasServicio) : base(fecha, turno, descripcion, cliente, cantAsistentes, serv, cantPersonasServicio)
         {
             this.duracion = duracion;
         }

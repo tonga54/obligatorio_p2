@@ -41,9 +41,10 @@ namespace Obligatorio_Dominio
             this.precio = precio;
         }
 
+        // utilizo para mostrar el resumen una vez que se añade un evento.
         public override string ToString()
         {
-            string devolucion = "\n:::::::::::::::::::::::::::\n" + " Nombre: " + this.nombre + "\n Descripcion: " + this.descripcion + "\n Precio: " + this.precio + "\n:::::::::::::::::::::::::::\n";
+            string devolucion = "\n Nombre: " + this.nombre + "\n Descripcion: " + this.descripcion + "\n Precio: $" + this.precio + "\n";
             return devolucion;
         }
  

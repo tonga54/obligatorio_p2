@@ -23,6 +23,15 @@ namespace Obligatorio_Dominio
         {
             return this.servicio.Precio * cantAsistentes;
         }
+
+        //Utilizado para listar el ultimo evento añadido
+        public override string ToString()
+        {
+            string devolucion = " Contratado para " + this.cantAsistentes + " personas";
+            devolucion += servicio.ToString();
+            devolucion += " Costo servicio: $" + calcularTotal() + "\n\n";
+            return devolucion;
+        }
         
     }
 }
