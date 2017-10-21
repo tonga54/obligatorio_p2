@@ -60,14 +60,82 @@ namespace Obligatorio_Web
             }
         }
 
+        static bool verificarEmail(string email)
+        {
+            /// gaston@eventos2017.com"
+            int i = 0;
+            bool bandera = false;
+            while(i < email.Length && !bandera)
+            {
+                if(email[i] == '@')
+                {
+                    int punto = email.IndexOf('.');
+                    if (punto > i) // si el punto esta mas adelante que el arroba
+                    {
+                        if((email.Length - (punto + 1)) == 3) // luego del '.' quedan 3 caracteres como para el 'com'
+                        {
+                            bandera = true;
+                        }
+                    }
+                }
+                
+                i++;
+            }
+            return bandera;
+        }
+
+        static bool verificarPassword(string password)
+        {
+            bool mayuscula = false;
+            int simbolo = 0;
+            for(int i = 0; i < password.Length; i++)
+            {
+                if (char.IsPunctuation(password[i]))//como solo se permite un signo, para detectar varios uso un contador
+                {
+                    simbolo++;
+                }
+                else if (char.IsUpper(password[i]))//si hay una mayuscula
+                {
+                    mayuscula = true;
+                }
+            }
+
+            if(mayuscula && simbolo == 1)//si hubo mayusculas y un solo simbolo todo OK
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }
+
+        static bool verificarNombre(string nombre)
+        {
+            bool bandera = true;
+            int i = 0;
+            while ( i < nombre.Length && bandera == true)
+            {
+                if(char.IsLetter(nombre[i]) || char.IsWhiteSpace(nombre[i])) //si el caracter es una letra o un espacio en blanco todo ok
+                {
+                    bandera = true;
+                }else // si es otra cosa entonces false termino el bucle y salgo.
+                {
+                    bandera = false;
+                }
+                i++;
+            }
+            return bandera;
+        }
+
         static void registrarAdministrador()
         {
             Console.WriteLine("Ingrese el email");
             string email = Console.ReadLine();
             Console.WriteLine("Ingrese el password");
             string password = Console.ReadLine();
+            
 
-            if (password.Length >= 8 && email.IndexOf("@eventos2017.com") > -1)
+            if (verificarPassword(password) && password.Length >= 8 && verificarEmail(email))
             {
                 string devolucion = emp.altaAdministrador(email, password);
                 Console.WriteLine("\n" + devolucion + "\n");
@@ -91,7 +159,7 @@ namespace Obligatorio_Web
             Console.WriteLine("Ingrese la direccion");
             string direccion = Console.ReadLine();
 
-            if (password.Length >= 8 && email.IndexOf("@eventos2017.com") > -1 && nombre != "" && telefono != "" && direccion != "")
+            if (verificarPassword(password) && password.Length >= 8 && verificarEmail(email) && verificarNombre(nombre) && nombre.Length >= 3 && telefono != "" && direccion != "")
             {
                 string devolucion = emp.altaOrganizador(email, password, nombre, telefono, direccion);
                 Console.WriteLine("\n" + devolucion + "\n");
@@ -185,6 +253,9 @@ namespace Obligatorio_Web
                                 Console.WriteLine("Ingrese la cantidad de personas para el servicio");
                                 int.TryParse(Console.ReadLine(), out cantPersonasServicio);
                                 cantPersonasServicioLista.Add(cantPersonasServicio);
+                           
+                            //ANALIZAR SI VALIDAR, SI SE INGRESA ALGO QUE NO SEA NUMERICO
+                            
                             /*
                                 int i = 0;
                                 bool bandera = false;
@@ -302,7 +373,7 @@ namespace Obligatorio_Web
         }
 
 
-        //Este metodo se encarga de verificar uno por uno, que la cantidad de personas para cada servicio sea menor que la cantidad
+        //Este metodo se encarga de verificar uno por uno, que la cantidad de personas del servicio sea menor que la cantidad
         //de asistentes al evento.
         static bool verificarNumeroDeAsistentesMenorANumeroServicio (List<int>cantPersonasServicio,int cantAsistentes)
         {

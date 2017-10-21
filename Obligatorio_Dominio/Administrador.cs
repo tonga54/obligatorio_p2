@@ -12,6 +12,9 @@ namespace Obligatorio_Dominio
         private string password;
         protected string rol;
 
+        public string Email { get { return this.email; } }
+        public string Password { get { return this.password; } }
+
         public Administrador(string email, string password)
         {
             this.email = email;
@@ -25,7 +28,6 @@ namespace Obligatorio_Dominio
             return resultado;
         }
 
-        public string Email{ get { return this.email; }}
-        public string Password { get { return this.password; }}
+        
     }
 }

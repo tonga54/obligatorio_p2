@@ -51,7 +51,7 @@ namespace Obligatorio_Dominio
             string devolucion = "";
             //busco al usuario solicitado
             Administrador adm = verificarUsuario(email, password);
-            if (adm is Organizador && adm != null)
+            if (adm is Organizador)
             {
                 //si el usuario encontrado es diferente de nulo y es Organizador entonces lo casteo
                 //una vez casteado verifico la fecha del evento esta disponible
@@ -100,7 +100,7 @@ namespace Obligatorio_Dominio
             }
             else
             {
-                devolucion = "\nNo existe un usuario con ese mail y/o contraseña\n";
+                devolucion = "\nNo existe un organizador con ese mail y/o contraseña\n";
             }
 
             return devolucion;
@@ -150,7 +150,7 @@ namespace Obligatorio_Dominio
             }
             else
             {
-                devolucion = "\nNo existe un usuario con ese mail y/o contraseña\n";
+                devolucion = "\nNo existe un organizador con ese mail y/o contraseña\n";
             }
 
             return devolucion;
@@ -277,19 +277,14 @@ namespace Obligatorio_Dominio
             return devolucion;
         }
 
-
-
         // --------------------------   PRECARGA DE DATOS   --------------------------
 
 
         public void cargarDatosPrueba()
         {
+            usuarios.Add(new Administrador("admin@eventos17.com", "Admin!99"));
             usuarios.Add(new Organizador("gaston@eventos2017.com", "password2", "Gaston2", "08321233", "dir2"));
-            usuarios.Add(new Administrador("gaston@eventos2017.com", "password"));
-            usuarios.Add(new Administrador("gaston@eventos2017.com", "password1"));
             usuarios.Add(new Organizador("gaston@eventos2017.com", "password1", "Gaston1", "08321233", "dir1"));
-            usuarios.Add(new Administrador("gaston@eventos2017.com", "password2"));
-            usuarios.Add(new Administrador("gaston@eventos2017.com", "password3"));
             usuarios.Add(new Organizador("liliana@eventos2017.com", "password3", "Liliana", "08321233", "dir3"));
 
             servicios.Add(new Servicio("Cabalgata", "Cabalgata al atardecer", 50));

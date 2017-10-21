@@ -25,18 +25,6 @@ namespace Obligatorio_Dominio
             }
         }
 
-        public Evento(DateTime fecha, string turno, string descripcion, string cliente,int cantAsistentes, List<Servicio> servicio, List<int> cantPersonasServicio)
-        {
-            this.fecha = fecha.Date;
-            this.turno = turno;
-            this.descripcion = descripcion;
-            this.cliente = cliente;
-            this.cantAsistentes = cantAsistentes;
-            this.codigo = Evento.ultCodigo;
-            Evento.ultCodigo++;
-            agregarServicio(servicio, cantPersonasServicio);
-        }
-
         public int Codigo
         {
             get
@@ -53,6 +41,18 @@ namespace Obligatorio_Dominio
             }
         }
 
+
+        public Evento(DateTime fecha, string turno, string descripcion, string cliente,int cantAsistentes, List<Servicio> servicio, List<int> cantPersonasServicio)
+        {
+            this.fecha = fecha.Date;
+            this.turno = turno;
+            this.descripcion = descripcion;
+            this.cliente = cliente;
+            this.cantAsistentes = cantAsistentes;
+            this.codigo = Evento.ultCodigo;
+            Evento.ultCodigo++;
+            agregarServicio(servicio, cantPersonasServicio);
+        }
 
         //Utilizado para listar el ultimo evento añadido
         public override string ToString()
