@@ -23,7 +23,7 @@ namespace Obligatorio_Dominio
             {
                 total += servicios[i].calcularTotal();
             }
-            total += limpieza;
+            total += Estandar.limpieza;
             return total;
         }
 

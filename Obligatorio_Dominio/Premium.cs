@@ -23,7 +23,7 @@ namespace Obligatorio_Dominio
                 total += servicios[i].calcularTotal();
             }
 
-            return total * aumento;
+            return total * Premium.aumento;
         }
     }
 }
