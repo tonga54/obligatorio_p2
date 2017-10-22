@@ -60,26 +60,35 @@ namespace Obligatorio_Web
             }
         }
 
+        static int contarCaracter(string cadena, char caracter)
+        {
+            int contador = 0;
+            for(int i = 0; i < cadena.Length; i++)
+            {
+                if(cadena[i] == caracter)
+                {
+                    contador++;
+                }
+            }
+            return contador;
+        }
+
         static bool verificarEmail(string email)
         {
             /// gaston@eventos2017.com"
-            int i = 0;
             bool bandera = false;
-            while(i < email.Length && !bandera)
+            if (contarCaracter(email, '@') == 1 && contarCaracter(email,'.') == 1) // si hay un @ y un .
             {
-                if(email[i] == '@')
+                int arroba = email.IndexOf('@');
+                int punto = email.IndexOf('.');
+
+                if ((arroba != 0 && arroba != email.Length - 1) && punto > arroba) //si el arroba no esta ni al principio ni al final y el punto esta mas adelante que el arroba
                 {
-                    int punto = email.IndexOf('.');
-                    if (punto > i) // si el punto esta mas adelante que el arroba
+                    if ((email.Length - (punto + 1)) >= 2) // luego del '.' quedan al menos 2 caracteres 
                     {
-                        if((email.Length - (punto + 1)) == 3) // luego del '.' quedan 3 caracteres como para el 'com'
-                        {
-                            bandera = true;
-                        }
+                        bandera = true;
                     }
                 }
-                
-                i++;
             }
             return bandera;
         }
@@ -113,17 +122,28 @@ namespace Obligatorio_Web
         {
             bool bandera = true;
             int i = 0;
-            while ( i < nombre.Length && bandera == true)
+            if(nombre.Length == 3)
             {
-                if(char.IsLetter(nombre[i]) || char.IsWhiteSpace(nombre[i])) //si el caracter es una letra o un espacio en blanco todo ok
-                {
-                    bandera = true;
-                }else // si es otra cosa entonces false termino el bucle y salgo.
+                if(!(char.IsLetter(nombre[0]) && char.IsWhiteSpace(nombre[1]) && char.IsLetter(nombre[2]))) // en el caso de que haya 3 caracteres, seria 'A(espacio)A'
                 {
                     bandera = false;
                 }
-                i++;
+            }else
+            {
+                while (i < nombre.Length && bandera == true)
+                {
+                    if (char.IsLetter(nombre[i]) || char.IsWhiteSpace(nombre[i])) //si el caracter es una letra o un espacio en blanco todo ok
+                    {
+                        bandera = true;
+                    }
+                    else // si es otra cosa entonces false termino el bucle y salgo.
+                    {
+                        bandera = false;
+                    }
+                    i++;
+                }
             }
+            
             return bandera;
         }
 
@@ -231,7 +251,7 @@ namespace Obligatorio_Web
                          como a su vez la de enteros que contendra la cantidad de personas para dicho servicio. Todo esto para luego
                          hacer un mapeo y 'sincronizar' el servicio con la cantidad de personas
                      
-                         Dentro del while la condicion de salida es que el usuario ingrese "salir" mientras ello no se cumple se pedira el nombre
+                         Dentro del while la condicion de salida es que el usuario ingrese "salir" mientras ello no se cumpla se pedira el nombre
                          del servicio y la cantidad de personas. */
 
 
@@ -246,7 +266,7 @@ namespace Obligatorio_Web
                             Console.WriteLine("\nIngrese 'salir' para dejar de agregar servicios\n");
                             Console.WriteLine("Ingrese el nombre de un servicio");
                             nombreServicio = Console.ReadLine();
-                            //nombreServicio = 
+
                             if(nombreServicio != "salir")
                             {
                                 servicios.Add(nombreServicio);
