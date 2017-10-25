@@ -144,8 +144,7 @@ namespace Obligatorio_Dominio
                     if (!bandera)
                     {
                         org.altaEvento(fecha, turno, descripcion, cliente, cantAsistentes, duracion, servicioEvento, cantPersonasServicio);
-                        devolucion = org.ultimoEvento();
-                        
+                        devolucion = org.ultimoEvento();    
                     }
                     else
                     {
