@@ -14,7 +14,7 @@ namespace Obligatorio_Web
         static void Main(string[] args)
         {
             int opcion = 0;
-            while (opcion != 7)
+            while (opcion != 10)
             {
                 mostrarMenu();
                 Console.WriteLine("Ingrese una opcion:");
@@ -31,6 +31,10 @@ namespace Obligatorio_Web
             Console.WriteLine("4 - Registrar evento");
             Console.WriteLine("5 - Listar eventos");
             Console.WriteLine("6 - Listar servicios");
+            Console.WriteLine("7 - Añadir servicios a eventos");
+            Console.WriteLine("8 - Modificar el precio de la Limpieza");
+            Console.WriteLine("9 - Modificar el precio de aumento");
+            Console.WriteLine("10 - Salir");
         }
 
         static void accionesMenu(int opcion)
@@ -55,9 +59,91 @@ namespace Obligatorio_Web
                 case 6:
                     listarServicios();
                     break;
+                case 7:
+                    agregarServicioAEvento();
+                    break;
+                case 8:
+                    modificarPrecioLimpieza();
+                    break;
+                case 9:
+                    modificarPrecioAumento();
+                    break;
                 default:
                     break;
             }
+        }
+
+        static void agregarServicioAEvento()
+        {
+            Console.WriteLine("Ingrese el email");
+            string email = Console.ReadLine();
+            Console.WriteLine("Ingrese la contraseña");
+            string password = Console.ReadLine();
+            Administrador adm = emp.verificarUsuario(email, password);
+            if(adm is Organizador)
+            {
+                Organizador org = (Organizador)adm;
+                Console.WriteLine("Ingrese la fecha del evento");
+                DateTime fecha;
+                DateTime.TryParse(Console.ReadLine(), out fecha);
+                if (fecha >= DateTime.Now.Date)
+                {
+                    Evento ev = emp.verificarFechaEvento(fecha, org);
+                    if (ev != null)
+                    {
+                        Console.WriteLine(ev.ToString());
+                        listarServicios();
+                        string nombreServicio = "";
+                        int cantPersonasServicio = 1;
+                        List<string> servicios = new List<string>();
+                        List<int> cantPersonasServicioLista = new List<int>();
+
+                        while (nombreServicio != "salir")
+                        {
+                            Console.WriteLine("\nIngrese 'salir' para dejar de agregar servicios\n");
+                            Console.WriteLine("Ingrese el nombre de un servicio");
+                            nombreServicio = Console.ReadLine();
+
+                            if (nombreServicio.ToLower() != "salir" && nombreServicio != "")
+                            {
+                                servicios.Add(nombreServicio);
+                                Console.WriteLine("Ingrese la cantidad de personas para el servicio");
+                                int.TryParse(Console.ReadLine(), out cantPersonasServicio);
+                                cantPersonasServicioLista.Add(cantPersonasServicio);
+                            }
+
+                         }
+                        emp.agregarServicioAEvento(org, ev, servicios, cantPersonasServicioLista);
+                        success("Servicio/s agregado/s con exito");
+                    }
+                    else
+                    {
+                        error("No existe un evento con esa fecha");
+                    }
+
+                }
+                else
+                {
+                    error("La fecha ya ah transcurrido");
+                }
+            }else
+            {
+                error("No existe el organizador");
+            }
+        }
+        static bool verificarNumerico(string cadena)
+        {
+            int i = 0;
+            bool bandera = true;
+            while (i < cadena.Length && bandera)
+            {
+                if (!char.IsDigit(cadena[i]))
+                {
+                    bandera = false;
+                }
+                i++;
+            }
+            return bandera;
         }
 
         static int contarCaracter(string cadena, char caracter)
@@ -196,39 +282,43 @@ namespace Obligatorio_Web
             string email = Console.ReadLine();
             Console.WriteLine("Ingrese el password");
             string password = Console.ReadLine();
-            Console.WriteLine("Introduce la fecha del evento");
-            DateTime fecha;
-            DateTime.TryParse(Console.ReadLine(), out fecha);
-            fecha = fecha.Date;
 
-            Console.WriteLine("Seleccione el tipo de evento");
-            Console.WriteLine("1 - Evento estandar");
-            Console.WriteLine("2 - Evento premium");
-            int tipo = 0;
-            int.TryParse(Console.ReadLine(), out tipo);
-
-            if (tipo == 1 || tipo == 2)
+            if(emp.verificarUsuario(email,password) != null)
             {
+                success("Se a ingresado con exito");
+                Console.WriteLine("Introduce la fecha del evento");
+                DateTime fecha;
+                DateTime.TryParse(Console.ReadLine(), out fecha);
+                fecha = fecha.Date;
 
-                Console.WriteLine("Seleccione el turno");
-                Console.WriteLine("1 - Mañana");
-                Console.WriteLine("2 - Tarde");
-                Console.WriteLine("3 - Noche");
-                int turnoNumerico = 0;
-                int.TryParse(Console.ReadLine(), out turnoNumerico);
+                Console.WriteLine("Seleccione el tipo de evento");
+                Console.WriteLine("1 - Evento estandar");
+                Console.WriteLine("2 - Evento premium");
+                int tipo = 0;
+                int.TryParse(Console.ReadLine(), out tipo);
 
-                Console.WriteLine("Ingrese la descripcion");
-                string descripcion = Console.ReadLine();
-
-                Console.WriteLine("Ingrese el nombre del cliente");
-                string cliente = Console.ReadLine();
-
-                Console.WriteLine("Ingrese la cantidad de asistentes");
-                int cantidadAsistentes = 0;
-                int.TryParse(Console.ReadLine(), out cantidadAsistentes);
-
-                if (turnoNumerico >= 1 && turnoNumerico <= 3 && descripcion != "" && cliente != "" && cantidadAsistentes > 0)
+                if (tipo == 1 || tipo == 2)
                 {
+
+                    Console.WriteLine("Seleccione el turno");
+                    Console.WriteLine("1 - Mañana");
+                    Console.WriteLine("2 - Tarde");
+                    Console.WriteLine("3 - Noche");
+                    int turnoNumerico = 0;
+                    int.TryParse(Console.ReadLine(), out turnoNumerico);
+
+                    Console.WriteLine("Ingrese la descripcion");
+                    string descripcion = Console.ReadLine();
+
+                    Console.WriteLine("Ingrese el nombre del cliente");
+                    string cliente = Console.ReadLine();
+
+                    Console.WriteLine("Ingrese la cantidad de asistentes");
+                    int cantidadAsistentes = 0;
+                    int.TryParse(Console.ReadLine(), out cantidadAsistentes);
+
+                    if (turnoNumerico >= 1 && turnoNumerico <= 3 && descripcion != "" && cliente != "" && cantidadAsistentes > 0)
+                    {
                         string turno = "";
                         switch (turnoNumerico)
                         {
@@ -267,44 +357,19 @@ namespace Obligatorio_Web
                             Console.WriteLine("Ingrese el nombre de un servicio");
                             nombreServicio = Console.ReadLine();
 
-                            if(nombreServicio != "salir")
+                            if (nombreServicio.ToLower() != "salir" && nombreServicio != "")
                             {
                                 servicios.Add(nombreServicio);
                                 Console.WriteLine("Ingrese la cantidad de personas para el servicio");
                                 int.TryParse(Console.ReadLine(), out cantPersonasServicio);
                                 cantPersonasServicioLista.Add(cantPersonasServicio);
-                           
-                            //ANALIZAR SI VALIDAR, SI SE INGRESA ALGO QUE NO SEA NUMERICO
-                            
-                            /*
-                                int i = 0;
-                                bool bandera = false;
-                                string cantPers = Console.ReadLine();
-                                while (i < cantPers.Length && bandera == false)
-                                {
-                                    if (Char.IsLetter(cantPers, i))
-                                    {
-                                        bandera = true;
-                                    }
-                                i++;
-                                }
-
-                            if (bandera)
-                            {
-                                error("Solo se permiten numericos");
-                            }else
-                            {
-                                int.TryParse(cantPers, out cantPersonasServicio);
-                            }*/
-
                             }
                         }
-                    
+
                         if (!verificarNumeroDeAsistentesMenorANumeroServicio(cantPersonasServicioLista, cantidadAsistentes))
                         {
                             if (tipo == 1)
                             {
-
                                 //Filtros para eventos estandar
                                 Console.WriteLine("Ingrese la duracion (horas)");
                                 int duracion = 0;
@@ -312,7 +377,7 @@ namespace Obligatorio_Web
 
                                 if (duracion > 0 && duracion <= 4 && cantidadAsistentes > 0 && cantidadAsistentes <= 10)
                                 {
-                                    string resultado = emp.altaEvento(email,password,fecha, turno, descripcion, cliente, cantidadAsistentes, duracion, servicios, cantPersonasServicioLista);
+                                    string resultado = emp.altaEvento(email, password, fecha, turno, descripcion, cliente, cantidadAsistentes, duracion, servicios, cantPersonasServicioLista);
                                     Console.WriteLine(resultado);
                                 }
                                 else
@@ -325,7 +390,7 @@ namespace Obligatorio_Web
                                 //Filtros para eventos premium
                                 if (cantidadAsistentes >= 0 && cantidadAsistentes <= 100)
                                 {
-                                    string resultado = emp.altaEvento(email,password,fecha, turno, descripcion, cliente, cantidadAsistentes, servicios, cantPersonasServicioLista);
+                                    string resultado = emp.altaEvento(email, password, fecha, turno, descripcion, cliente, cantidadAsistentes, servicios, cantPersonasServicioLista);
                                     Console.WriteLine(resultado);
                                 }
                                 else
@@ -338,33 +403,23 @@ namespace Obligatorio_Web
                         {
                             error("La cantidad de personas que asisten al evento no puede ser mayor a las personas del servicio / Ingresó una cifra menor a 0");
                         }
+                    }
+                    else
+                    {
+                        error("Algun campo es esta vacio o no corresponde con lo solicitado");
+                    }
+
                 }
                 else
                 {
-                    error("Algun campo es esta vacio o no corresponde con lo solicitado");
+                    error("Opcion invalida");
+
                 }
-
-            }
-            else
+            }else
             {
-                error("Opcion invalida");
-
+                error("El usuario no existe");
             }
         }
-
-
-
-        static bool verificarUsuario(string email, string password)
-        {
-            if(password.Length >= 8 && email.IndexOf("@eventos2017.com") > -1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-         }
 
         static void listarUsuarios()
         {
@@ -409,7 +464,48 @@ namespace Obligatorio_Web
             }
             return bandera;
         }
-   
+
+        static void modificarPrecioLimpieza()
+        {
+            Console.WriteLine("Ingrese el email");
+            string email = Console.ReadLine();
+            Console.WriteLine("Ingrese el password");
+            string password = Console.ReadLine();
+
+            Console.WriteLine("Ingrese el precio de la limpieza para eventos estandar");
+            string precio = Console.ReadLine();
+            if (verificarNumerico(precio))
+            {
+                decimal precioLimpieza = 0;
+                decimal.TryParse(precio, out precioLimpieza);
+                Console.WriteLine(emp.modificarPrecioLimpieza(email,password,precioLimpieza));
+            }else
+            {
+                error("El precio debe ser numerico");
+            }
+        }
+
+        static void modificarPrecioAumento()
+        {
+            Console.WriteLine("Ingrese el email");
+            string email = Console.ReadLine();
+            Console.WriteLine("Ingrese el password");
+            string password = Console.ReadLine();
+
+            Console.WriteLine("Ingrese el precio de aumento para eventos premium");
+            string precio = Console.ReadLine();
+            if (verificarNumerico(precio))
+            {
+                decimal precioLimpieza = 0;
+                decimal.TryParse(precio, out precioLimpieza);
+                Console.WriteLine(emp.modificarPrecioAumento(email, password, precioLimpieza));
+            }
+            else
+            {
+                error("El precio debe ser numerico");
+            }
+        }
+
         static void error(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;

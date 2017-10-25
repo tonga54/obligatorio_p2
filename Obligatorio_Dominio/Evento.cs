@@ -65,7 +65,7 @@ namespace Obligatorio_Dominio
             return devolucion;
         }
 
-        private void agregarServicio(List<Servicio> servicio,List<int> cantAsistentes)
+        public void agregarServicio(List<Servicio> servicio,List<int> cantAsistentes)
         {
             for(int i = 0; i < servicio.Count; i++)
             {
@@ -74,7 +74,8 @@ namespace Obligatorio_Dominio
         }
 
         public abstract decimal costoTotal();
-
+        
+        
     }
 
 }

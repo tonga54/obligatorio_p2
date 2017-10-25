@@ -11,6 +11,14 @@ namespace Obligatorio_Dominio
         private static decimal limpieza = 500;
         private int duracion;
 
+        public static decimal Limpieza
+        {
+            set
+            {
+                Estandar.limpieza = value;
+            }
+        }
+
         public Estandar(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, int duracion, List<Servicio> serv, List<int> cantPersonasServicio) : base(fecha, turno, descripcion, cliente, cantAsistentes, serv, cantPersonasServicio)
         {
             this.duracion = duracion;
@@ -26,8 +34,5 @@ namespace Obligatorio_Dominio
             total += Estandar.limpieza;
             return total;
         }
-
-
     }
-
 }

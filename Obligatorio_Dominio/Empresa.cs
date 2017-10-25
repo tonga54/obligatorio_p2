@@ -19,6 +19,63 @@ namespace Obligatorio_Dominio
 
         // --------------------------   INSERCION DE DATOS   --------------------------
 
+        public void agregarServicioAEvento(Organizador org, Evento ev, List<string> servicio, List<int> cantAsistentes)
+        {
+            List<Servicio> servicioEvento = new List<Servicio>();
+            int i = 0;
+            bool bandera = false;
+
+            while (i < servicio.Count && bandera == false)
+            {
+                Servicio serv = buscarServicio(servicio[i]);
+                if (serv == null)
+                {
+                    bandera = true;
+                }
+                else
+                {
+                    servicioEvento.Add(serv);
+                }
+                i++;
+            }
+
+            if (!bandera)
+            {
+                org.buscarEventoYAgregarServicio(ev, servicioEvento, cantAsistentes);
+            }
+            else
+            {
+                //devolucion = "\nNo existe el servicio\n";
+            }
+        }
+
+        public string modificarPrecioLimpieza(string email, string password, decimal precio)
+        {
+            Administrador adm = verificarUsuario(email, password);
+            if(!(adm is Administrador) && adm != null)
+            {
+                Estandar.Limpieza = precio;
+                return "\nPrecio de limpieza modificado con exito\n";
+            }else
+            {
+                return "\nSolo los Administradores pueden modificar este valor\n";
+            }   
+        }
+
+        public string modificarPrecioAumento(string email, string password,decimal precio)
+        {
+            Administrador adm = verificarUsuario(email, password);
+            if (!(adm is Organizador) && adm != null)
+            {
+                Premium.Aumento = precio;
+                return "\nPrecio de aumento modificado con exito\n";
+            }
+            else
+            {
+                return "\nSolo los Administradores pueden modificar este valor\n";
+            }
+        }
+
         public string altaAdministrador(string email, string password)
         {
             if (verificarUsuario(email, password) != null)
@@ -56,7 +113,7 @@ namespace Obligatorio_Dominio
                 //si el usuario encontrado es diferente de nulo y es Organizador entonces lo casteo
                 //una vez casteado verifico la fecha del evento esta disponible
                 Organizador org = (Organizador)adm;
-                if (verificarFechaEvento(fecha) == null)
+                if (org.verificarFecha(fecha) == null)
                 {
 
                     /*Con la lista de strings con los nombres de los servicios que recibo, recorro dicha lista
@@ -114,7 +171,7 @@ namespace Obligatorio_Dominio
             if (adm is Organizador && adm != null)
             {
                 Organizador org = (Organizador)adm;
-                if (verificarFechaEvento(fecha) == null)
+                if (org.verificarFecha(fecha) == null)
                 {
                     List<Servicio> servicioEvento = new List<Servicio>();
                     int i = 0;
@@ -161,21 +218,9 @@ namespace Obligatorio_Dominio
         // --------------------------   BUSQUEDA DE DATOS Y EXTRACCION   --------------------------
 
 
-        private Evento verificarFechaEvento(DateTime fecha)
+        public Evento verificarFechaEvento(DateTime fecha,Organizador org)
         {
-            Evento ev = null;
-            int i = 0;
-            while (i < usuarios.Count && ev == null)
-            {
-                Administrador adm = usuarios[i];
-                if (adm is Organizador)
-                {
-                    Organizador org = (Organizador)adm;
-                    ev = org.verificarFecha(fecha.Date);
-                }
-                i++;
-            }
-            return ev;
+            return org.verificarFecha(fecha.Date);
         }
 
         private Servicio buscarServicio(string nombreServicio)
@@ -193,7 +238,7 @@ namespace Obligatorio_Dominio
             return serv;
         }
 
-        private Administrador verificarUsuario(string email, string password)
+        public Administrador verificarUsuario(string email, string password)
         {
             int i = 0;
             Administrador usuario = null;
@@ -282,11 +327,11 @@ namespace Obligatorio_Dominio
 
         public void cargarDatosPrueba()
         {
-            usuarios.Add(new Administrador("admin@eventos17.com", "Admin!99"));
-            usuarios.Add(new Organizador("gaston@eventos2017.com", "password2", "Gaston2", "08321233", "dir2"));
-            usuarios.Add(new Organizador("gaston@eventos2017.com", "password1", "Gaston1", "08321233", "dir1"));
-            usuarios.Add(new Organizador("liliana@eventos2017.com", "password3", "Liliana", "08321233", "dir3"));
-
+            altaAdministrador("admin@eventos17.com", "Admin!99");
+            altaOrganizador("gaston@eventos17.com", "Password!", "Gaston2", "08321233", "dir2");
+            altaOrganizador("organizador@eventos17.com", "Password!!", "Gaston1", "08321233", "dir1");
+            altaOrganizador("liliana@eventos17.com", "Password?", "Liliana", "08321233", "dir3");
+            
             servicios.Add(new Servicio("Cabalgata", "Cabalgata al atardecer", 50));
             servicios.Add(new Servicio("Paseo en barco", "Paseo por la costa", 250));
             servicios.Add(new Servicio("Fiesta en la playa", "Fiesta en la playa", 80));
@@ -307,9 +352,9 @@ namespace Obligatorio_Dominio
             serviciosPruebaDos.Add("Fiesta en la playa");
             cantAsistentesPruebaDos.Add(9);
 
-            altaEvento("gaston@eventos2017.com", "password2", DateTime.Now, "Noche", "dasdsajhd", "Pedro", 20, 4, serviciosPrueba, cantAsistentesPrueba);
-            altaEvento("gaston@eventos2017.com", "password2", new DateTime(2017, 12, 24), "Tarde", "dasdsajhd", "Pedro", 10, 2, serviciosPrueba, cantAsistentesPrueba);
-            altaEvento("gaston@eventos2017.com", "password2", new DateTime(2018, 01, 27), "Mañana", "dasdsajhd", "Pedro", 20, 3, serviciosPruebaDos, cantAsistentesPruebaDos);
+            altaEvento("gaston@eventos17.com", "Password!", DateTime.Now, "Noche", "dasdsajhd", "Pedro", 20, 4, serviciosPrueba, cantAsistentesPrueba);
+            altaEvento("gaston@eventos17.com", "Password!", new DateTime(2017, 12, 24), "Tarde", "dasdsajhd", "Pedro", 10, 2, serviciosPrueba, cantAsistentesPrueba);
+            altaEvento("gaston@eventos17.com", "Password!", new DateTime(2018, 01, 27), "Mañana", "dasdsajhd", "Pedro", 20, 3, serviciosPruebaDos, cantAsistentesPruebaDos);
         }
 
         

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obligatorio_Dominio
 {
-    class Organizador : Administrador
+    public class Organizador : Administrador
     {
         private string nombre;
         private string direccion;
@@ -35,7 +35,7 @@ namespace Obligatorio_Dominio
             Evento ev = null;
             while(i < eventos.Count && ev == null)
             {
-                if (fecha == eventos[i].Fecha)
+                if (fecha == eventos[i].Fecha.Date)
                 {
                     ev = eventos[i];
                 }
@@ -60,6 +60,22 @@ namespace Obligatorio_Dominio
         {
             Premium ev = new Premium(fecha, turno, descripcion, cliente, cantAsistentes, serv, cantPersonasServicio);
             eventos.Add(ev);
+        }
+
+        //parte agregada
+
+        public void buscarEventoYAgregarServicio(Evento ev, List<Servicio> servicio, List<int> cantAsistentes)
+        {
+            int i = 0;
+            bool bandera = false;
+            while(i < eventos.Count && bandera == false)
+            {
+                if (eventos[i].Equals(ev))
+                {
+                    eventos[i].agregarServicio(servicio,cantAsistentes);
+                }
+                i++;
+            }
         }
 
         public string listarEventos()

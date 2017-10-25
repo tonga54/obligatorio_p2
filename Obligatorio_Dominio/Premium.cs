@@ -10,6 +10,14 @@ namespace Obligatorio_Dominio
     {
         private static decimal aumento = 1.05m;
 
+        public static decimal Aumento
+        {
+            set
+            {
+                Premium.aumento = value;
+            }
+        }
+
         public Premium(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes, List<Servicio> serv, List<int> cantPersonasServicio) : base(fecha, turno, descripcion, cliente, cantAsistentes,serv, cantPersonasServicio)
         {
             this.fecha = fecha;
