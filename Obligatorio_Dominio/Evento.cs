@@ -17,6 +17,14 @@ namespace Obligatorio_Dominio
         protected static int ultCodigo;
         protected List<EventoServicio> servicios = new List<EventoServicio>();
 
+        public int CantAsistentes
+        {
+            get
+            {
+                return this.cantAsistentes;
+            }
+        }
+
         public DateTime Fecha
         {
             get

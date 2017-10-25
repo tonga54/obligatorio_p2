@@ -19,12 +19,12 @@ namespace Obligatorio_Dominio
 
         // --------------------------   INSERCION DE DATOS   --------------------------
 
-        public void agregarServicioAEvento(Organizador org, Evento ev, List<string> servicio, List<int> cantAsistentes)
+        public string agregarServicioAEvento(Organizador org, Evento ev, List<string> servicio, List<int> cantAsistentes)
         {
             List<Servicio> servicioEvento = new List<Servicio>();
             int i = 0;
             bool bandera = false;
-
+            string devolucion;
             while (i < servicio.Count && bandera == false)
             {
                 Servicio serv = buscarServicio(servicio[i]);
@@ -42,11 +42,13 @@ namespace Obligatorio_Dominio
             if (!bandera)
             {
                 org.buscarEventoYAgregarServicio(ev, servicioEvento, cantAsistentes);
+                devolucion = "\nServicio/s agregado/s con exito\n";
             }
             else
             {
-                //devolucion = "\nNo existe el servicio\n";
+                devolucion = "\nOPERACION ANULADA: El o los servicios ingresados no existen\n";
             }
+            return devolucion;
         }
 
         public string modificarPrecioLimpieza(string email, string password, decimal precio)
@@ -142,12 +144,12 @@ namespace Obligatorio_Dominio
                     if (!bandera)
                     {
                         org.altaEvento(fecha, turno, descripcion, cliente, cantAsistentes, duracion, servicioEvento, cantPersonasServicio);
-                        Console.WriteLine(org.ultimoEvento());
+                        devolucion = org.ultimoEvento();
                         
                     }
                     else
                     {
-                        devolucion = "\nNo existe el servicio\n";
+                        devolucion = "\nOPERACION ANULADA: El o los servicios ingresados no existen\n";
                     }
                 }
                 else
@@ -194,11 +196,11 @@ namespace Obligatorio_Dominio
                     if (!bandera)
                     {
                         org.altaEvento(fecha, turno, descripcion, cliente, cantAsistentes, servicioEvento, cantPersonasServicio);
-                        Console.WriteLine(org.ultimoEvento());
+                        devolucion = org.ultimoEvento();
                     }
                     else
                     {
-                        devolucion = "\nNo existe el servicio\n";
+                        devolucion = "\nOPERACION ANULADA: El o los servicios ingresados no existen\n";
                     }
                 }else
                 {
