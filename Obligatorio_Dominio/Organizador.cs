@@ -45,9 +45,6 @@ namespace Obligatorio_Dominio
             return ev;
         }
 
-        //public Evento buscarEvento () PARA AGREGARLE SERVICIOS EN EL FUTURO
-
-
         //EVENTO ESTANDAR
         public void altaEvento(DateTime fecha, string turno, string descripcion, string cliente, int cantAsistentes,int duracion, List<Servicio> serv, List<int> cantPersonasServicio)
         {
@@ -62,8 +59,6 @@ namespace Obligatorio_Dominio
             eventos.Add(ev);
         }
 
-        //parte agregada
-
         public void buscarEventoYAgregarServicio(Evento ev, List<Servicio> servicio, List<int> cantAsistentes)
         {
             int i = 0;
@@ -73,6 +68,7 @@ namespace Obligatorio_Dominio
                 if (eventos[i].Equals(ev))
                 {
                     eventos[i].agregarServicio(servicio,cantAsistentes);
+                    bandera = true;
                 }
                 i++;
             }
@@ -107,6 +103,11 @@ namespace Obligatorio_Dominio
             Evento ultimoEvento = eventos[eventos.Count - 1];
             devolucion += ultimoEvento.ToString();
             return devolucion;
+        }
+
+        public int cantAsistentesEvento(Evento ev)
+        {
+            return ev.CantAsistentes;
         }
 
     }

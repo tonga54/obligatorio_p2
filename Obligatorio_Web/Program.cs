@@ -356,7 +356,12 @@ namespace Obligatorio_Web
                         int cantPersonasServicio = 0;
                         List<Servicio> servicios = new List<Servicio>();
                         List<int> cantPersonasServicioLista = new List<int>();
-
+                        //Tengo algunas dudas con esta variable ya que no se si es muy correcto hacer
+                        //esto, es la unica forma que encontre de poder consultar la cantidad de personas
+                        //para un evento, ya que podria haberlo hecho simplemente llamando a la property
+                        //del evento, pero como Program no tiene acceso a dicho contenido lo que hice
+                        //fue como ir paso a paso de clase a clase hasta poder retornar dicho valor.
+                        int cantPersonasEvento = emp.cantAsistentesEvento(org, ev);
                         while (nombreServicio != "salir")
                         {
                             success("Ingrese 'salir' para dejar de agregar servicios");
@@ -365,12 +370,14 @@ namespace Obligatorio_Web
 
                             if (nombreServicio.ToLower() != "salir" && nombreServicio != "")
                             {
-                                Console.WriteLine("Ingrese la cantidad de personas para el servicio");
+                                Console.WriteLine("Ingrese la cantidad de personas para el servicio MAX(" + cantPersonasEvento + ")");
                                 string cantPersonas = Console.ReadLine();
                                 if (verificarNumerico(cantPersonas))
                                 {
                                     int.TryParse(cantPersonas, out cantPersonasServicio);
-                                    if (cantPersonasServicio > 0 && cantPersonasServicio <= ev.CantAsistentes)
+                                    //if (cantPersonasServicio > 0 && cantPersonasServicio <= ev.CantAsistentes)
+                                    
+                                    if (cantPersonasServicio > 0 && cantPersonasServicio <= cantPersonasEvento)
                                     {
                                         Servicio serv = emp.buscarServicio(nombreServicio);
                                         if (serv != null)
@@ -461,6 +468,8 @@ namespace Obligatorio_Web
 
         // --------------------------   VALIDACIONES   --------------------------
 
+        //Este metodo recibe un string y lo recorre caracter por caracter,
+        //si alguno de ellos no es un digito retorna false.
         static bool verificarNumerico(string cadena)
         {
             int i = 0;
@@ -476,6 +485,9 @@ namespace Obligatorio_Web
             return bandera;
         }
 
+        //Este metodo recibe un string y un caracter, el mismo a traves del bucle
+        //for, recorre el string y cuenta la cantidad de veces que aparece el caracter
+        //en el mismo.
         static int contarCaracter(string cadena, char caracter)
         {
             int contador = 0;
@@ -491,16 +503,19 @@ namespace Obligatorio_Web
 
         static bool verificarEmail(string email)
         {
-            /// gaston@eventos2017.com"
             bool bandera = false;
-            if (contarCaracter(email, '@') == 1 && contarCaracter(email, '.') == 1) // si hay un @ y un .
+            //Si hay un @ y un .
+            if (contarCaracter(email, '@') == 1 && contarCaracter(email, '.') == 1)
             {
+                //Busco la posicion de dicho 'punto' y 'arroba'
                 int arroba = email.IndexOf('@');
                 int punto = email.IndexOf('.');
 
-                if ((arroba != 0 && arroba != email.Length - 1) && punto > arroba) //si el arroba no esta ni al principio ni al final y el punto esta mas adelante que el arroba
+                //Si el arroba no esta ni al principio ni al final y el punto esta mas adelante que el arroba.
+                if ((arroba != 0 && arroba != email.Length - 1) && punto > arroba)
                 {
-                    if ((email.Length - (punto + 1)) >= 2) // luego del '.' quedan al menos 2 caracteres 
+                    //Luego del '.' tienen que haber por lo menos 2 caracteres.
+                    if ((email.Length - (punto + 1)) >= 2) 
                     {
                         bandera = true;
                     }
@@ -515,17 +530,21 @@ namespace Obligatorio_Web
             int simbolo = 0;
             for (int i = 0; i < password.Length; i++)
             {
-                if (char.IsPunctuation(password[i]))//como solo se permite un signo, para detectar varios uso un contador
+                //Recorre toda la cadena y utilizo un contador ya que solo se permite un signo
+                if (char.IsPunctuation(password[i]))
                 {
                     simbolo++;
                 }
-                else if (char.IsUpper(password[i]))//si hay una mayuscula
+                //Hago lo mismo para la mayuscula, la diferencia es que utilizo un booleano
+                //solo necesito validar si hay por lo menos una mayuscula, entonces utilizo una bandera.
+                else if (char.IsUpper(password[i]))
                 {
                     mayuscula = true;
                 }
             }
 
-            if (mayuscula && simbolo == 1)//si hubo mayusculas y un solo simbolo todo OK
+            //Si hubo mayusculas y un solo signo.
+            if (mayuscula && simbolo == 1)
             {
                 return true;
             }
@@ -541,24 +560,24 @@ namespace Obligatorio_Web
             int i = 0;
             if (nombre.Length == 3)
             {
-                if (!(char.IsLetter(nombre[0]) && char.IsWhiteSpace(nombre[1]) && char.IsLetter(nombre[2]))) // en el caso de que haya 3 caracteres, seria 'A(espacio)A'
+                // En el caso de que haya 3 caracteres, seria 'A(espacio)A', entonces como el caso minimo
+                //serian 3 caracteres, lo harcodeo.
+                if (!(char.IsLetter(nombre[0]) && char.IsWhiteSpace(nombre[1]) && char.IsLetter(nombre[2]))) 
                 {
                     bandera = false;
                 }
             }
             else
             {
+                //Si no, es decir si hay mas de 3 caracteres, entonces recorro el string
                 while (i < nombre.Length && bandera == true)
                 {
-                    if (char.IsLetter(nombre[i]) || char.IsWhiteSpace(nombre[i])) //si el caracter es una letra o un espacio en blanco todo ok
+                    //Si el caracter no es una letra o un espacio en esta todo correcto.  
+                    if (!(char.IsLetter(nombre[i]) || char.IsWhiteSpace(nombre[i])))
                     {
-                        bandera = true;
+                         bandera = false;
                     }
-                    else // si es otra cosa entonces false termino el bucle y salgo.
-                    {
-                        bandera = false;
-                    }
-                    i++;
+                i++;
                 }
             }
 

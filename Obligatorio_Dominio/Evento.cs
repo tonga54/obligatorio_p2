@@ -75,6 +75,8 @@ namespace Obligatorio_Dominio
 
         public void agregarServicio(List<Servicio> servicio,List<int> cantAsistentes)
         {
+            //Recorre la lista de servicios y los añade junto con la cantidad de asistentes
+            //(validada en program) a la lista de servicios.
             for(int i = 0; i < servicio.Count; i++)
             {
                 servicios.Add(new EventoServicio(servicio[i], cantAsistentes[i]));
@@ -82,7 +84,6 @@ namespace Obligatorio_Dominio
         }
 
         public abstract decimal costoTotal();
-        
         
     }
 

@@ -40,7 +40,7 @@ namespace Obligatorio_Dominio
 
         public string modificarPrecioAumento(string email, string password,decimal precio)
         {
-            Administrador adm = verificarUsuario(email, password);
+            Administrador adm = verificarUsuario(email,password);
             if (!(adm is Organizador) && adm != null)
             {
                 Premium.Aumento = precio;
@@ -54,7 +54,7 @@ namespace Obligatorio_Dominio
 
         public string altaAdministrador(string email, string password)
         {
-            if (verificarUsuario(email, password) != null)
+            if (verificarUsuario(email) != null)
             {
                 return "Ya existe un usuario con ese email";
             }
@@ -67,7 +67,7 @@ namespace Obligatorio_Dominio
 
         public string altaOrganizador(string email, string password, string nombre, string telefono, string direccion)
         {
-            if (verificarUsuario(email, password) != null)
+            if (verificarUsuario(email) != null)
             {
                 return "Ya existe un usuario con ese email";
             }
@@ -187,7 +187,10 @@ namespace Obligatorio_Dominio
             return usuario;
         }
 
-
+        public int cantAsistentesEvento(Organizador org, Evento ev)
+        {
+            return org.cantAsistentesEvento(ev);
+        }
         // --------------------------   LISTADO DE INFORMACION   --------------------------
 
         public string listarUsuarios()

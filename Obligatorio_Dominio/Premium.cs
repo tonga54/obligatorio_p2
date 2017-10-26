@@ -23,6 +23,7 @@ namespace Obligatorio_Dominio
             this.fecha = fecha;
         }
 
+        //Metodo polimorfico
         public override decimal costoTotal()
         {
             decimal total = 0;

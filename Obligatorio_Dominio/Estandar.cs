@@ -24,6 +24,7 @@ namespace Obligatorio_Dominio
             this.duracion = duracion;
         }
 
+        //Metodo polimorfico
         public override decimal costoTotal()
         {
             decimal total = 0;
