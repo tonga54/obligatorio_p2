@@ -73,191 +73,10 @@ namespace Obligatorio_Web
             }
         }
 
-        static void agregarServicioAEvento()
-        {
-            Console.WriteLine("Ingrese el email");
-            string email = Console.ReadLine();
-            Console.WriteLine("Ingrese la contraseña");
-            string password = Console.ReadLine();
-            Administrador adm = emp.verificarUsuario(email, password);
-            if(adm is Organizador)
-            {
-                Organizador org = (Organizador)adm;
-                Console.WriteLine("Ingrese la fecha del evento");
-                DateTime fecha;
-                DateTime.TryParse(Console.ReadLine(), out fecha);
-                if (fecha.Date >= DateTime.Now.Date)
-                {
-                    Evento ev = emp.verificarFechaEvento(fecha, org);
-                    if (ev != null)
-                    {
-                        Console.WriteLine(ev.ToString());
-                        listarServicios();
-                        string nombreServicio = "";
-                        int cantPersonasServicio = 0;
-                        List<Servicio> servicios = new List<Servicio>();
-                        List<int> cantPersonasServicioLista = new List<int>();
-
-                        while (nombreServicio != "salir")
-                        {
-                            success("Ingrese 'salir' para dejar de agregar servicios");
-                            Console.WriteLine("Ingrese el nombre de un servicio");
-                            nombreServicio = Console.ReadLine();
-
-                            if (nombreServicio.ToLower() != "salir" && nombreServicio != "")
-                            {
-                                Console.WriteLine("Ingrese la cantidad de personas para el servicio");
-                                string cantPersonas = Console.ReadLine();
-                                if (verificarNumerico(cantPersonas))
-                                {
-                                    int.TryParse(cantPersonas, out cantPersonasServicio);
-                                    if(cantPersonasServicio > 0 && cantPersonasServicio <= ev.CantAsistentes)
-                                    {
-                                        Servicio serv = emp.buscarServicio(nombreServicio);
-                                        if(serv != null)
-                                        {
-                                            servicios.Add(serv);
-                                            cantPersonasServicioLista.Add(cantPersonasServicio);
-                                        }
-                                        else
-                                        {
-                                            error("No existe el servicio");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        error("La cantidad de asistentes debe ser mayor a 0 y menor a la cantidad de asistentes al evento");
-                                    }
-                                }
-                                else
-                                {
-                                    error("La cantidad de personas para el servicio debe ser numerico");
-                                }
-                                
-                            }
-
-                         }
-                        Console.WriteLine(emp.agregarServicioAEvento(org, ev, servicios, cantPersonasServicioLista));
-                    }
-                    else
-                    {
-                        error("No existe un evento con esa fecha");
-                    }
-                }
-                else
-                {
-                    error("La fecha ya ah transcurrido");
-                }
-            }else
-            {
-                error("No existe el organizador");
-            }
-        }
-
-        static bool verificarNumerico(string cadena)
-        {
-            int i = 0;
-            bool bandera = true;
-            while (i < cadena.Length && bandera)
-            {
-                if (!char.IsDigit(cadena[i]))
-                {
-                    bandera = false;
-                }
-                i++;
-            }
-            return bandera;
-        }
-
-        static int contarCaracter(string cadena, char caracter)
-        {
-            int contador = 0;
-            for(int i = 0; i < cadena.Length; i++)
-            {
-                if(cadena[i] == caracter)
-                {
-                    contador++;
-                }
-            }
-            return contador;
-        }
-
-        static bool verificarEmail(string email)
-        {
-            /// gaston@eventos2017.com"
-            bool bandera = false;
-            if (contarCaracter(email, '@') == 1 && contarCaracter(email,'.') == 1) // si hay un @ y un .
-            {
-                int arroba = email.IndexOf('@');
-                int punto = email.IndexOf('.');
-
-                if ((arroba != 0 && arroba != email.Length - 1) && punto > arroba) //si el arroba no esta ni al principio ni al final y el punto esta mas adelante que el arroba
-                {
-                    if ((email.Length - (punto + 1)) >= 2) // luego del '.' quedan al menos 2 caracteres 
-                    {
-                        bandera = true;
-                    }
-                }
-            }
-            return bandera;
-        }
-
-        static bool verificarPassword(string password)
-        {
-            bool mayuscula = false;
-            int simbolo = 0;
-            for(int i = 0; i < password.Length; i++)
-            {
-                if (char.IsPunctuation(password[i]))//como solo se permite un signo, para detectar varios uso un contador
-                {
-                    simbolo++;
-                }
-                else if (char.IsUpper(password[i]))//si hay una mayuscula
-                {
-                    mayuscula = true;
-                }
-            }
-
-            if(mayuscula && simbolo == 1)//si hubo mayusculas y un solo simbolo todo OK
-            {
-                return true;
-            }else
-            {
-                return false;
-            }
-        }
-
-        static bool verificarNombre(string nombre)
-        {
-            bool bandera = true;
-            int i = 0;
-            if(nombre.Length == 3)
-            {
-                if(!(char.IsLetter(nombre[0]) && char.IsWhiteSpace(nombre[1]) && char.IsLetter(nombre[2]))) // en el caso de que haya 3 caracteres, seria 'A(espacio)A'
-                {
-                    bandera = false;
-                }
-            }else
-            {
-                while (i < nombre.Length && bandera == true)
-                {
-                    if (char.IsLetter(nombre[i]) || char.IsWhiteSpace(nombre[i])) //si el caracter es una letra o un espacio en blanco todo ok
-                    {
-                        bandera = true;
-                    }
-                    else // si es otra cosa entonces false termino el bucle y salgo.
-                    {
-                        bandera = false;
-                    }
-                    i++;
-                }
-            }
-            
-            return bandera;
-        }
-
         static void registrarAdministrador()
         {
+            Console.Clear();
+            Console.WriteLine("\n---------- REGISTRAR ADMINISTRADOR ----------\n");
             Console.WriteLine("Ingrese el email");
             string email = Console.ReadLine();
             Console.WriteLine("Ingrese el password");
@@ -277,6 +96,8 @@ namespace Obligatorio_Web
 
         static void registrarOrganizador()
         {
+            Console.Clear();
+            Console.WriteLine("\n---------- REGISTRAR ORGANIZADOR ----------\n");
             Console.WriteLine("Ingrese el email");
             string email = Console.ReadLine();
             Console.WriteLine("Ingrese el password");
@@ -301,6 +122,8 @@ namespace Obligatorio_Web
 
         static void registrarEvento()
         {
+            Console.Clear();
+            Console.WriteLine("\n---------- REGISTRAR EVENTO ----------\n");
             Console.WriteLine("Ingrese el email");
             string email = Console.ReadLine();
             Console.WriteLine("Ingrese el password");
@@ -357,20 +180,15 @@ namespace Obligatorio_Web
                                     break;
                             }
 
-                            /* Imprimo la lista de servicios, creo una variable de tipo string nombreServicio y cantPersonasServicio entero con
-                             el valor 1 seteado, ya que en el caso de que no se ingrese cant personas para el servicio deseado. 
-                     
-                             Creo dos listas una de strings la cual va a poseer el nombre de cada uno de los servicios que vaya introduciendo el usuario
-                             como a su vez la de enteros que contendra la cantidad de personas para dicho servicio. Todo esto para luego
-                             hacer un mapeo y 'sincronizar' el servicio con la cantidad de personas
-                     
-                             Dentro del while la condicion de salida es que el usuario ingrese "salir" mientras ello no se cumpla se pedira el nombre
-                             del servicio y la cantidad de personas. 
-                             
-                             El sentido de hacer esta implementacion un poco rebuscada es para intentar que program trabaje lo menor posible
-                             con objetos que devuelva empresa, ya que por seguridad en mi entender es lo mejor.
+                            /* 
+                             Imprimo la lista de servicios, creo dos listas una de tipo Servicio y la otra de tipo entero
+                             entro en un while donde su condicion de salida es que la variable de tipo string "nombreServicio" sea "salir"
+                             mientras eso no se cumpla, el usuario estara ingresando nombres de servicios los cuales seran verificados
+                             en la lista de servicios que posee empresa. Para la lista de enteros cantPersonasServicio se valida que 
+                             el usuario ingrese correctamente algo que sea numerico y que sea menor a la cantidad de personas
+                             asistentes al evento. Una vez cumplido todo esto quedan ambas listas una con servicios y la otra con la cantidad de asistentes
+                             para el mismo.  
                              */
-
 
                             Console.WriteLine(emp.listarServicios());
                             string nombreServicio = "";
@@ -387,13 +205,13 @@ namespace Obligatorio_Web
 
                                 if (nombreServicio.ToLower() != "salir" && nombreServicio != "")
                                 {
-                                    Console.WriteLine("Ingrese la cantidad de personas para el servicio");
+                                    Console.WriteLine("Ingrese la cantidad de personas para el servicio MAX(" + cantidadAsistentes + ")");
                                     string cantPersonas = Console.ReadLine();
 
                                     if (verificarNumerico(cantPersonas))
                                     {
                                         int.TryParse(cantPersonas, out cantPersonasServicio);
-                                        if (cantPersonasServicio <= cantidadAsistentes)
+                                        if (cantPersonasServicio <= cantidadAsistentes && cantPersonasServicio > 0)
                                         {
                                             Servicio servicio = emp.buscarServicio(nombreServicio);
                                             if (servicio != null)
@@ -408,7 +226,7 @@ namespace Obligatorio_Web
                                         }
                                         else
                                         {
-                                            error("La cantidad de personas para el servicio debe ser menor o igual a la de asistentes al evento");
+                                            error("La cantidad de asistentes debe ser mayor a 0 y menor a la cantidad de asistentes al evento");
                                         }
                                     }
                                     else
@@ -417,13 +235,16 @@ namespace Obligatorio_Web
                                     }
                                 }
                             }
+
+                            if(servicios.Count > 0 || cantPersonasServicioLista.Count > 0)
+                            {
+
                             if (tipo == 1)
                             {
                                 //Filtros para eventos estandar
                                 Console.WriteLine("Ingrese la duracion (horas)");
                                 int duracion = 0;
                                 int.TryParse(Console.ReadLine(), out duracion);
-
                                 if (duracion > 0 && duracion <= 4 && cantidadAsistentes > 0 && cantidadAsistentes <= 10)
                                 {
                                     Console.WriteLine(emp.altaEvento(email, password, fecha, turno, descripcion, cliente, cantidadAsistentes, duracion, servicios, cantPersonasServicioLista));
@@ -439,7 +260,6 @@ namespace Obligatorio_Web
                                 if (cantidadAsistentes > 0 && cantidadAsistentes <= 100)
                                 {
                                     Console.WriteLine(emp.altaEvento(email, password, fecha, turno, descripcion, cliente, cantidadAsistentes, servicios, cantPersonasServicioLista));
-                                    
                                 }
                                 else
                                 {
@@ -449,16 +269,19 @@ namespace Obligatorio_Web
                         }
                         else
                         {
-                            error("Algun campo es esta vacio o no corresponde con lo solicitado");
+                            error("No se pueden registrar eventos sin servicios");
                         }
-
+                        }
+                        else
+                        {
+                            error("Algun campo es esta vacio o no corresponde con lo solicitado");
+                        
+                        }
                     }
                     else
                     {
                         error("Opcion invalida");
-
                     }
-                
                 }
                 else
                 {
@@ -474,32 +297,127 @@ namespace Obligatorio_Web
 
         static void listarUsuarios()
         {
+            Console.Clear();
+            Console.WriteLine("\n---------- LISTAR USUARIOS ----------\n");
             Console.WriteLine(emp.listarUsuarios());
         }
 
         static void listarServicios()
         {
+            Console.Clear();
+            Console.WriteLine("\n---------- LISTAR SERVICIOS ----------\n");
             string devolucion = emp.listarServicios();
             Console.WriteLine(devolucion);
         }
 
         static void listarEventos()
         {
+            Console.Clear();
+            Console.WriteLine("\n---------- LISTAR EVENTOS ----------\n");
             Console.WriteLine("Ingrese el mail");
             string email = Console.ReadLine();
-            if(email != "")
+            Console.WriteLine("Ingrese la contraseña");
+            string password = Console.ReadLine();
+            Administrador user = emp.verificarUsuario(email,password);
+            if (user != null && user is Organizador)
             {
-                string devolucion = emp.listarEventos(email);
-                Console.WriteLine("\n" + devolucion + "\n");
+                Organizador org = (Organizador)user;
+                Console.WriteLine("\n" + emp.listarEventos(org,email) + "\n");
             }else
             {
-                error("Datos ingresados incorrectamente");
+                error("No existe el organizador");
             }
 
         }
 
+        static void agregarServicioAEvento()
+        {
+            Console.Clear();
+            Console.WriteLine("\n---------- AÑADIR SERVICIOS A EVENTOS ----------\n");
+            Console.WriteLine("Ingrese el email");
+            string email = Console.ReadLine();
+            Console.WriteLine("Ingrese la contraseña");
+            string password = Console.ReadLine();
+            Administrador adm = emp.verificarUsuario(email, password);
+            if (adm is Organizador)
+            {
+                Organizador org = (Organizador)adm;
+                Console.WriteLine("Ingrese la fecha del evento");
+                DateTime fecha;
+                DateTime.TryParse(Console.ReadLine(), out fecha);
+                if (fecha.Date >= DateTime.Now.Date)
+                {
+                    Evento ev = emp.verificarFechaEvento(fecha, org);
+                    if (ev != null)
+                    {
+                        Console.WriteLine(ev.ToString());
+                        listarServicios();
+                        string nombreServicio = "";
+                        int cantPersonasServicio = 0;
+                        List<Servicio> servicios = new List<Servicio>();
+                        List<int> cantPersonasServicioLista = new List<int>();
+
+                        while (nombreServicio != "salir")
+                        {
+                            success("Ingrese 'salir' para dejar de agregar servicios");
+                            Console.WriteLine("Ingrese el nombre de un servicio");
+                            nombreServicio = Console.ReadLine();
+
+                            if (nombreServicio.ToLower() != "salir" && nombreServicio != "")
+                            {
+                                Console.WriteLine("Ingrese la cantidad de personas para el servicio");
+                                string cantPersonas = Console.ReadLine();
+                                if (verificarNumerico(cantPersonas))
+                                {
+                                    int.TryParse(cantPersonas, out cantPersonasServicio);
+                                    if (cantPersonasServicio > 0 && cantPersonasServicio <= ev.CantAsistentes)
+                                    {
+                                        Servicio serv = emp.buscarServicio(nombreServicio);
+                                        if (serv != null)
+                                        {
+                                            servicios.Add(serv);
+                                            cantPersonasServicioLista.Add(cantPersonasServicio);
+                                        }
+                                        else
+                                        {
+                                            error("No existe el servicio");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        error("La cantidad de asistentes debe ser mayor a 0 y menor a la cantidad de asistentes al evento");
+                                    }
+                                }
+                                else
+                                {
+                                    error("La cantidad de personas para el servicio debe ser numerico");
+                                }
+
+                            }
+
+                        }
+                        Console.WriteLine(emp.agregarServicioAEvento(org, ev, servicios, cantPersonasServicioLista));
+                    }
+                    else
+                    {
+                        error("No existe un evento con esa fecha");
+                    }
+                }
+                else
+                {
+                    error("La fecha ya ah transcurrido");
+                }
+            }
+            else
+            {
+                error("No existe el organizador");
+            }
+        }
+
         static void modificarPrecioLimpieza()
         {
+            Console.Clear();
+            Console.WriteLine("\n---------- MODIFICAR EL PRECIO DE LIMPIEZA ----------\n");
             Console.WriteLine("Ingrese el email");
             string email = Console.ReadLine();
             Console.WriteLine("Ingrese el password");
@@ -520,6 +438,8 @@ namespace Obligatorio_Web
 
         static void modificarPrecioAumento()
         {
+            Console.Clear();
+            Console.WriteLine("\n---------- MODIFICAR EL PRECIO DE AUMENTO ----------\n");
             Console.WriteLine("Ingrese el email");
             string email = Console.ReadLine();
             Console.WriteLine("Ingrese el password");
@@ -538,6 +458,114 @@ namespace Obligatorio_Web
                 error("El precio debe ser numerico");
             }
         }
+
+        // --------------------------   VALIDACIONES   --------------------------
+
+        static bool verificarNumerico(string cadena)
+        {
+            int i = 0;
+            bool bandera = true;
+            while (i < cadena.Length && bandera)
+            {
+                if (!char.IsDigit(cadena[i]))
+                {
+                    bandera = false;
+                }
+                i++;
+            }
+            return bandera;
+        }
+
+        static int contarCaracter(string cadena, char caracter)
+        {
+            int contador = 0;
+            for (int i = 0; i < cadena.Length; i++)
+            {
+                if (cadena[i] == caracter)
+                {
+                    contador++;
+                }
+            }
+            return contador;
+        }
+
+        static bool verificarEmail(string email)
+        {
+            /// gaston@eventos2017.com"
+            bool bandera = false;
+            if (contarCaracter(email, '@') == 1 && contarCaracter(email, '.') == 1) // si hay un @ y un .
+            {
+                int arroba = email.IndexOf('@');
+                int punto = email.IndexOf('.');
+
+                if ((arroba != 0 && arroba != email.Length - 1) && punto > arroba) //si el arroba no esta ni al principio ni al final y el punto esta mas adelante que el arroba
+                {
+                    if ((email.Length - (punto + 1)) >= 2) // luego del '.' quedan al menos 2 caracteres 
+                    {
+                        bandera = true;
+                    }
+                }
+            }
+            return bandera;
+        }
+
+        static bool verificarPassword(string password)
+        {
+            bool mayuscula = false;
+            int simbolo = 0;
+            for (int i = 0; i < password.Length; i++)
+            {
+                if (char.IsPunctuation(password[i]))//como solo se permite un signo, para detectar varios uso un contador
+                {
+                    simbolo++;
+                }
+                else if (char.IsUpper(password[i]))//si hay una mayuscula
+                {
+                    mayuscula = true;
+                }
+            }
+
+            if (mayuscula && simbolo == 1)//si hubo mayusculas y un solo simbolo todo OK
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        static bool verificarNombre(string nombre)
+        {
+            bool bandera = true;
+            int i = 0;
+            if (nombre.Length == 3)
+            {
+                if (!(char.IsLetter(nombre[0]) && char.IsWhiteSpace(nombre[1]) && char.IsLetter(nombre[2]))) // en el caso de que haya 3 caracteres, seria 'A(espacio)A'
+                {
+                    bandera = false;
+                }
+            }
+            else
+            {
+                while (i < nombre.Length && bandera == true)
+                {
+                    if (char.IsLetter(nombre[i]) || char.IsWhiteSpace(nombre[i])) //si el caracter es una letra o un espacio en blanco todo ok
+                    {
+                        bandera = true;
+                    }
+                    else // si es otra cosa entonces false termino el bucle y salgo.
+                    {
+                        bandera = false;
+                    }
+                    i++;
+                }
+            }
+
+            return bandera;
+        }
+
+        // --------------------------   METODOS GENERICOS   --------------------------
 
         static void error(string message)
         {

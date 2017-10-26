@@ -28,7 +28,7 @@ namespace Obligatorio_Dominio
         public string modificarPrecioLimpieza(string email, string password, decimal precio)
         {
             Administrador adm = verificarUsuario(email, password);
-            if(!(adm is Administrador) && adm != null)
+            if(!(adm is Organizador) && adm != null)
             {
                 Estandar.Limpieza = precio;
                 return "\nPrecio de limpieza modificado con exito\n";
@@ -172,7 +172,7 @@ namespace Obligatorio_Dominio
             return usuario;
         }
 
-        private Administrador verificarUsuario(string email)
+        public Administrador verificarUsuario(string email)
         {
             int i = 0;
             Administrador usuario = null;
@@ -207,28 +207,9 @@ namespace Obligatorio_Dominio
             return devolucion;
         }
 
-        public string listarEventos(string email)
+        public string listarEventos(Organizador org,string email)
         {
-            string devolucion;
-            Administrador user = verificarUsuario(email);
-            if (user != null)
-            {
-                if (user is Organizador)
-                {
-                    Organizador org = (Organizador)user;
-                    devolucion = org.listarEventos();
-                }
-                else
-                {
-                    devolucion = "El usuario ingresado no es un organizador";
-                }
-            }
-            else
-            {
-                devolucion = "No existe el usuario";
-            }
-
-            return devolucion;
+            return org.listarEventos();
         }
 
         public string listarServicios()
