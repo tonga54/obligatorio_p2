@@ -95,7 +95,7 @@ namespace Obligatorio_Web
                         listarServicios();
                         string nombreServicio = "";
                         int cantPersonasServicio = 0;
-                        List<string> servicios = new List<string>();
+                        List<Servicio> servicios = new List<Servicio>();
                         List<int> cantPersonasServicioLista = new List<int>();
 
                         while (nombreServicio != "salir")
@@ -113,13 +113,23 @@ namespace Obligatorio_Web
                                     int.TryParse(cantPersonas, out cantPersonasServicio);
                                     if(cantPersonasServicio > 0 && cantPersonasServicio <= ev.CantAsistentes)
                                     {
-                                        servicios.Add(nombreServicio);
-                                        cantPersonasServicioLista.Add(cantPersonasServicio);
-                                    }else
+                                        Servicio serv = emp.buscarServicio(nombreServicio);
+                                        if(serv != null)
+                                        {
+                                            servicios.Add(serv);
+                                            cantPersonasServicioLista.Add(cantPersonasServicio);
+                                        }
+                                        else
+                                        {
+                                            error("No existe el servicio");
+                                        }
+                                    }
+                                    else
                                     {
                                         error("La cantidad de asistentes debe ser mayor a 0 y menor a la cantidad de asistentes al evento");
                                     }
-                                }else
+                                }
+                                else
                                 {
                                     error("La cantidad de personas para el servicio debe ser numerico");
                                 }
@@ -365,12 +375,13 @@ namespace Obligatorio_Web
                             Console.WriteLine(emp.listarServicios());
                             string nombreServicio = "";
                             int cantPersonasServicio = 0;
-                            List<string> servicios = new List<string>();
+                            List<Servicio> servicios = new List<Servicio>();
                             List<int> cantPersonasServicioLista = new List<int>();
 
                             while (nombreServicio != "salir")
                             {
                                 success("Ingrese 'salir' para dejar de agregar servicios");
+
                                 Console.WriteLine("Ingrese el nombre de un servicio");
                                 nombreServicio = Console.ReadLine();
 
@@ -378,13 +389,22 @@ namespace Obligatorio_Web
                                 {
                                     Console.WriteLine("Ingrese la cantidad de personas para el servicio");
                                     string cantPersonas = Console.ReadLine();
+
                                     if (verificarNumerico(cantPersonas))
                                     {
                                         int.TryParse(cantPersonas, out cantPersonasServicio);
                                         if (cantPersonasServicio <= cantidadAsistentes)
                                         {
-                                            servicios.Add(nombreServicio);
-                                            cantPersonasServicioLista.Add(cantPersonasServicio);
+                                            Servicio servicio = emp.buscarServicio(nombreServicio);
+                                            if (servicio != null)
+                                            {
+                                                servicios.Add(servicio);
+                                                cantPersonasServicioLista.Add(cantPersonasServicio);
+                                            }
+                                            else
+                                            {
+                                                error("No existe el servicio");
+                                            }
                                         }
                                         else
                                         {

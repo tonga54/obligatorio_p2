@@ -8,8 +8,8 @@ namespace Obligatorio_Dominio
 {
     public class Administrador
     {
-        private string email;
-        private string password;
+        protected string email;
+        protected string password;
         protected string rol;
 
         public string Email { get { return this.email; } }
